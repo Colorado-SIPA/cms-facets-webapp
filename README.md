@@ -26,16 +26,13 @@ This app requires a Google Sheet as a backend data source.
 + Get the name of the sheet tab within the spreadsheet where your content will come from (e.g. "Sheet 1")
 + Get the column numbers (zero-indexed) for each data cell that you want to display in the cards
 
-### 2. 🎃 Script Installation
+### 2. 💥 Script Installation
 The app can be run in any environment that supports HTML/CSS/JS.
 
-Simply [add the script](./dist/js/sheets-facets.js) to the page where you want the element to run. Include the code in a script element with `type="module"`. 
+Simply add the script tag to the page, as shown in the example below:
 
-Example:
 ```html
-    <script type="module" id="sheets-facets-app">
-        /* contents of script goes here... */
-    </script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.0/dist/js/sheets-facets.js" integrity="sha512-jEaqcOdIu3bw/Gxgi3sAYxyTS0kmWSblPltippBa7jDCMgIFRezr/a8/guGDBhQIjGvf4dHJdPXxEt5rKSK1XQ==" crossorigin="anonymous"></script>
 ```
 
 The script can appear before or after the HTML element (`<sheets-facets>`), but the best practice is to put it in the `<head>` or as close as possible.
