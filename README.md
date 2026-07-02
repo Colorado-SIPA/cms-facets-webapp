@@ -4,6 +4,8 @@ This custom HTML element uses a Google Sheet as a database to create a faceted s
 
 Built with TypeScript and Vite, the contents of this custom element are completely encapsulated using the Shadow DOM, meaning its styles will never conflict with the parent website. It is configured entirely through declarative HTML elements, with no JavaScript required by the end user.
 
+See the [live demo](https://components.sf-prod-uat.colorado.gov/google-sheets-faceted-search) in action.
+
 
 ## ✨ Features
 
@@ -18,6 +20,7 @@ Built with TypeScript and Vite, the contents of this custom element are complete
 To use the widget on any website, import the bundled JavaScript file and drop the custom `<sheets-facets>` element into your HTML. 
 
 ### 1. 📊 Google Sheets Configuration
+
 This app requires a Google Sheet as a backend data source. 
 
 + Ensure that the sheet is shared as public (i.e. File > Share > Share with Others > Anyone with the Link)
@@ -29,7 +32,7 @@ This app requires a Google Sheet as a backend data source.
 ### 2. 💥 Script Installation
 The app can be run in any environment that supports HTML/CSS/JS.
 
-Simply add the script tag to the page, as shown in the example below:
+Simply add the the script to any webpage:
 
 ```html
 <script type="module" src="https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.0/dist/js/sheets-facets.js" integrity="sha512-jEaqcOdIu3bw/Gxgi3sAYxyTS0kmWSblPltippBa7jDCMgIFRezr/a8/guGDBhQIjGvf4dHJdPXxEt5rKSK1XQ==" crossorigin="anonymous"></script>
@@ -39,7 +42,8 @@ The script can appear before or after the HTML element (`<sheets-facets>`), but 
 
 
 ### 3. 🚧 The HTML Structure
-The widget is configured using semantic child tags. This tells the widget exactly how to map the Google Sheet columns to the UI.
+
+After installing the script, you will need to create the custom HTML element with the correct child elements. This tells the widget exactly how to map the Google Sheet columns to the UI.
 
 ```html
 <sheets-facets sheet-id="YOUR_GOOGLE_SHEET_ID" sheet-name="Resources" items-per-page="20">
@@ -77,6 +81,7 @@ The widget is configured using semantic child tags. This tells the widget exactl
 ```
 
 #### Required Attributes
+
 The top-level `<sheets-facets>` tag requires the following attributes to function:
 * `sheet-id`: The unique ID found in your Google Sheet's URL.
 * `sheet-name`: The exact name of the tab in the spreadsheet containing your data (e.g., `Resources`).
