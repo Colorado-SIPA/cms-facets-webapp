@@ -21,7 +21,8 @@ To use the widget on any website, import the bundled JavaScript file and drop th
 This app requires a Google Sheet as a backend data source. 
 
 + Ensure that the sheet is shared as public (i.e. File > Share > Share with Others > Anyone with the Link)
-+ Get the ID of your Google Sheet from the URL: `https://docs.google.com/spreadsheets/d/[YOUR-ID-HERE]/edit?gid=0#gid=0`
++ Get the ID of your Google Sheet from the URL: 
+    + e.g. `https://docs.google.com/spreadsheets/d/[YOUR-ID-HERE]/edit?gid=0#gid=0`
 + Get the name of the sheet tab within the spreadsheet where your content will come from (e.g. "Sheet 1")
 + Get the column numbers (zero-indexed) for each data cell that you want to display in the cards
 
