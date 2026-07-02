@@ -1,0 +1,83 @@
+#main-page.container {
+    .main-content {
+        #main-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+            h2#search-results-heading {
+                font-size: calc(1.2rem + 1vmin);
+                font-family: "museo-slab", "Roboto Slab", Georgia, "Times New Roman", serif;
+                line-height: 1.5;
+                font-weight: 700;
+            }
+
+            #pagination-summary {
+                padding-bottom: 1rem;
+            }
+
+            /* --- Data Grid --- */
+            .facets-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.5rem;
+                margin-bottom: 2rem;
+                list-style-type: none;
+                padding-left: 0;
+
+                &:focus {
+                    outline: 2px dashed #0056b3;
+                    outline-offset: 4px;
+                }
+
+                &:focus:not(:focus-visible) {
+                    outline: none;
+                }
+
+                @media (max-width: 1200px) {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                @media (max-width: 768px) {
+                    grid-template-columns: 1fr;
+                }
+
+                /* --- Individual Cards --- */
+                .card {
+                    border: 1px solid #e2e8f0;
+                    border-radius: 0.375rem;
+                    padding: 1.25rem;
+                    background: #ffffff;
+
+                    .card-body {
+                        a.links {
+                            color: rgb(38, 93, 166);
+                            text-decoration: none;
+
+                            &:hover,
+                            &:focus {
+                                text-decoration: underline;
+                            }
+
+                            h3.card-title {
+                                color: inherit;
+                                font-size: 1.25rem;
+                                margin: 0 0 0.75rem 0;
+                                font-family: "museo-slab", "Roboto Slab", Georgia, "Times New Roman", serif;
+                            }
+                        }
+
+                        .p_items {
+                            p {
+                                margin: 0.5rem 0;
+                                span {
+                                    font-weight: bold;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

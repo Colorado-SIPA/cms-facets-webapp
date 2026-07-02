@@ -1,0 +1,63 @@
+#main-page.container {
+    .pagination-container {
+        width: 100%;
+        margin-top: auto;
+        padding-top: 1.5rem;
+
+        .pagination-flex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+
+            .page-link {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 2.75rem;
+                min-height: 2.75rem;
+                padding: 0.5rem 0.85rem;
+                border: 1px solid #949494;
+                background-color: #fff;
+                color: #333;
+                font-family: Roboto, Arial, sans-serif;
+                font-size: 1rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition:
+                    background-color 0.2s ease,
+                    color 0.2s ease;
+
+                &:hover:not(:disabled) {
+                    background-color: #0056b3;
+                    color: #fff;
+                }
+
+                &:focus-visible {
+                    outline: 2px solid #0056b3;
+                    outline-offset: 2px;
+                }
+
+                &:disabled {
+                    background-color: #e5e5e5;
+                    color: #a0a0a0;
+                    cursor: not-allowed;
+                }
+
+                &.active {
+                    background-color: #333;
+                    color: #fff;
+                    font-weight: 700;
+                }
+
+                &.prev-btn,
+                &.next-btn {
+                    padding-left: 1.25rem;
+                    padding-right: 1.25rem;
+                }
+            }
+        }
+    }
+}
