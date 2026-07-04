@@ -60,6 +60,8 @@ export class SheetsFacetsWidget extends HTMLElement {
             this.updateView();
             setupEventListeners(this, this.root);
 
+            if (this.hidden) this.hidden = false;
+
         } catch (error) {
             console.error('[Climate Facets] Failed to initialize widget:', error);
 

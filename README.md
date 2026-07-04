@@ -46,7 +46,7 @@ The script can appear before or after the HTML element (`<sheets-facets>`), but 
 After installing the script, you will need to create the custom HTML element with the correct child elements. This tells the widget exactly how to map the Google Sheet columns to the UI.
 
 ```html
-<sheets-facets sheet-id="YOUR_GOOGLE_SHEET_ID" sheet-name="Resources" items-per-page="20">
+<sheets-facets sheet-id="YOUR_GOOGLE_SHEET_ID" sheet-name="Resources" items-per-page="20" hidden>
     
     <search-filters>
         <filter-group>
@@ -87,6 +87,7 @@ After installing the script, you will need to create the custom HTML element wit
     + `sheet-id`: (Required) The unique ID found in your Google Sheet's URL.
     + `sheet-name`: (Required) The exact name of the tab in the spreadsheet containing your data (e.g., `Resources`).
     + `items-per-page`: (Optional) The number of results to display before paginating. Defaults to `20`.
+    + `hidden`: (Optional) Prevents the flash of unstyled content, which is common with custom elements.
 
 #### `<search-filters>`
 
@@ -97,7 +98,7 @@ After installing the script, you will need to create the custom HTML element wit
 
 + **Description:** Establishes an accordion with grouped checkbox inputs that function as filters on the content.
 + **Attributes:**
-    + `cols` (Optional) Specifies the column numbers from the Google spreadsheet to search. Multiple comma separated values are allowed. Note that columns are zero indexed.
+    + `cols`: (Optional) Specifies the column numbers from the Google spreadsheet to search. Multiple comma separated values are allowed. Note that columns are zero indexed.
 
 #### `<filter-title>`
 
@@ -123,13 +124,13 @@ After installing the script, you will need to create the custom HTML element wit
 
 + **Description:** Defines a column in the Google Sheet that contains a fully formed URL to be used for the linked title.
 + **Attributes:**
-    + `column` (Required) The column number from the Google spreadsheet where the data will be pulled from. Note that columns are zero indexed.
+    + `column`: (Required) The column number from the Google spreadsheet where the data will be pulled from. Note that columns are zero indexed.
 
 #### `<card-title>`
 
 + **Description:** Defines a column in the Google Sheet that contains the text to use for the linked title.
 + **Attributes:**
-    + `column` (Required) The column number from the Google spreadsheet where the data will be pulled from. Note that columns are zero indexed.
+    + `column`: (Required) The column number from the Google spreadsheet where the data will be pulled from. Note that columns are zero indexed.
 
 #### `<card-body>`
 
@@ -140,8 +141,8 @@ After installing the script, you will need to create the custom HTML element wit
 
 + **Description:** This element defines a content section to be fetched from a specific column in the Google Sheet. Note that multiple instances may be used within a single card to display values from different columns in the spreadsheet.
 + **Attributes:**
-    + `column` (Required) The column number from the Google spreadsheet where the data will be pulled from. Note that columns are zero indexed.
-    + `Label` (Optional) If provided, this text will be displayed as bold text with a colon prior to the displaying of the content.
+    + `column`: (Required) The column number from the Google spreadsheet where the data will be pulled from. Note that columns are zero indexed.
+    + `Label`: (Optional) If provided, this text will be displayed as bold text with a colon prior to the displaying of the content.
 
 
 ## 💻 Local Development
