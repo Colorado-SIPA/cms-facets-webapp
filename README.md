@@ -80,12 +80,68 @@ After installing the script, you will need to create the custom HTML element wit
 </sheets-facets>
 ```
 
-#### Required Attributes
+#### `<sheets-facets>`
 
-The top-level `<sheets-facets>` tag requires the following attributes to function:
-* `sheet-id`: The unique ID found in your Google Sheet's URL.
-* `sheet-name`: The exact name of the tab in the spreadsheet containing your data (e.g., `Resources`).
-* `items-per-page`: (Optional) The number of results to display before paginating. Defaults to `20`.
++ **Description:** The wrapper for the entire app.
++ **Attributes:**
+    + `sheet-id`: (Required) The unique ID found in your Google Sheet's URL.
+    + `sheet-name`: (Required) The exact name of the tab in the spreadsheet containing your data (e.g., `Resources`).
+    + `items-per-page`: (Optional) The number of results to display before paginating. Defaults to `20`.
+
+#### `<search-filters>`
+
++ **Description:** The wrapper for the accordions that contain checkbox filters. 
++ **Attributes:** None
+
+#### `<filter-group>`
+
++ **Description:** Establishes an accordion with grouped checkbox inputs that function as filters on the content.
++ **Attributes:**
+    + `cols` (Optional) Specifies the column numbers from the Google spreadsheet to search. Multiple comma separated values are allowed. Note that columns are zero indexed.
+
+#### `<filter-title>`
+
++ **Description:** Creates the title for the accordion group.
++ **Attributes:** None
+
+#### `<filter-item>`
+
++ **Description:** A keyword or keyphrase that will be searched for. It will also be used to create the checkbox label on the filter.
++ **Attributes:** None
+
+#### `<search-results>`
+
++ **Description:** The wrapper for the card layout section.
++ **Attributes:** None
+
+#### `<card-layout>`
+
++ **Description:** This section defines the layout of each `div.card-body` element and the mappings to the Google Sheet columns where the data will come from.
++ **Attributes:** None
+
+#### `<card-link>`
+
++ **Description:** Defines a column in the Google Sheet that contains a fully formed URL to be used for the linked title.
++ **Attributes:**
+    + `column` (Required) The column number from the Google spreadsheet where the data will be pulled from. Note that columns are zero indexed.
+
+#### `<card-title>`
+
++ **Description:** Defines a column in the Google Sheet that contains the text to use for the linked title.
++ **Attributes:**
+    + `column` (Required) The column number from the Google spreadsheet where the data will be pulled from. Note that columns are zero indexed.
+
+#### `<card-body>`
+
++ **Description:** The wrapper for the content section on the search results UI cards.
++ **Attributes:** None
+
+#### `<card-content>`
+
++ **Description:** This element defines a content section to be fetched from a specific column in the Google Sheet. Note that multiple instances may be used within a single card to display values from different columns in the spreadsheet.
++ **Attributes:**
+    + `column` (Required) The column number from the Google spreadsheet where the data will be pulled from. Note that columns are zero indexed.
+    + `Label` (Optional) If provided, this text will be displayed as bold text with a colon prior to the displaying of the content.
 
 
 ## 💻 Local Development

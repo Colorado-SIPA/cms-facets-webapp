@@ -25,7 +25,6 @@ export class SheetsFacetsWidget extends HTMLElement {
         try {
             const config = initializeConfig(this);
 
-            // Dynamically set up active filters based on what we parsed from the HTML
             const initialActiveFilters: ActiveFilters = {};
             Object.keys(config.availableFilters).forEach(label => {
                 initialActiveFilters[label] = [];
@@ -35,7 +34,7 @@ export class SheetsFacetsWidget extends HTMLElement {
                 config,
                 rawData: [],
                 filteredData: [],
-                availableFilters: config.availableFilters, // Pass the parsed filters directly to state!
+                availableFilters: config.availableFilters,
                 activeFilters: initialActiveFilters,
                 searchQuery: '',
                 currentPage: 1,
@@ -50,7 +49,6 @@ export class SheetsFacetsWidget extends HTMLElement {
 
             injectLayoutSkeleton(this.root);
 
-            // We now only have ONE network request!
             const mainData = await fetchMainData(this.state.config);
 
             this.state.rawData = mainData;
@@ -80,7 +78,12 @@ export class SheetsFacetsWidget extends HTMLElement {
     }
 
     public updateView() {
-        const newFilteredData = applyFilters(this.state.rawData, this.state.activeFilters, this.state.searchQuery);
+        const newFilteredData = applyFilters(
+            this.state.rawData, 
+            this.state.activeFilters, 
+            this.state.availableFilters,
+            this.state.searchQuery
+        );
 
         this.state.filteredData = newFilteredData;
         this.state.totalPages = Math.ceil(newFilteredData.length / this.state.config.itemsPerPage) || 1;
@@ -108,7 +111,6 @@ export class SheetsFacetsWidget extends HTMLElement {
     }
 
     public scrollToResults() {
-        // Query inside the shadow root
         const resultsHeading = this.root.querySelector('#search-results-heading');
         if (resultsHeading) {
             resultsHeading.scrollIntoView({ behavior: 'smooth', block: 'start' });

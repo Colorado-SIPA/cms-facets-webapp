@@ -16,7 +16,7 @@ export interface AppConfig {
     sheetName: string;
     itemsPerPage: number;
     schema: SchemaConfig;
-    availableFilters: Record<string, string[]>;
+    availableFilters: FilterOptions; 
 }
 
 // 2. Raw Data Types
@@ -40,14 +40,19 @@ export interface GenericDataItem {
 export interface MetaDataValue {
     label?: string;
     value: string;
+    columnIndex: number;
 }
 
 export type ParsedItem = GenericDataItem;
 
 // 4. Filter Types
 // --------------------------------------------------------
-export type FilterOptions = Record<string, string[]>;
+export type FilterOptions = Record<string, FilterGroupDef>; 
 export type ActiveFilters = Record<string, string[]>;
+export interface FilterGroupDef {
+    items: string[];
+    targetColumns: number[];
+}
 
 // 5. Application State
 // --------------------------------------------------------

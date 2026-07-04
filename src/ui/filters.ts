@@ -1,17 +1,18 @@
 import { html } from '../utils/html';
 import { sanitizeHTML } from '../utils/sanitize-html';
+import { getUniqueId } from '../utils/get-unique-id';
 import type { FilterOptions, ActiveFilters } from '../types';
 
 export function renderFilters(available: FilterOptions, active: ActiveFilters, root: ShadowRoot): void {
     const container = root.querySelector('.filters');
     if (!container) return;
-    const uniqueInstanceId = generateInstanceId();
+    const uniqueInstanceId = getUniqueId();
 
-    const html = Object.entries(available).map(([label, options], index) => {
-        return createFilterGroup(label, label, options, active, uniqueInstanceId, index + 1);
+    const htmlContent = Object.entries(available).map(([label, groupDef], index) => {
+        return createFilterGroup(label, label, groupDef.items, active, uniqueInstanceId, index + 1);
     }).join('');
 
-    container.innerHTML = html;
+    container.innerHTML = htmlContent;
 }
 
 const createFilterGroup = (
@@ -63,12 +64,4 @@ const createFilterGroup = (
             </div>
         </div>
     `;
-};
-
-// Generate a unique ID for the component instance.
-const generateInstanceId = (): string => {
-    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-        return crypto.randomUUID();
-    }
-    return Math.random().toString(36).substring(2, 9);
 };

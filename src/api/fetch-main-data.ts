@@ -1,4 +1,4 @@
-import type { AppConfig, ParsedItem } from '../types';
+import type { AppConfig, ParsedItem, MetaDataValue } from '../types';
 import { parseCSV } from './parse';
 
 export async function fetchMainData(config: AppConfig): Promise<ParsedItem[]> {
@@ -14,12 +14,14 @@ export async function fetchMainData(config: AppConfig): Promise<ParsedItem[]> {
         rawData.shift(); // Remove the header row
 
         const parsedData: ParsedItem[] = rawData.map((row, index) => {
-            const metaData: { label?: string; value: string }[] = []; 
+            // ✨ FIX: Use the imported interface instead of the inline type
+            const metaData: MetaDataValue[] = []; 
             
             config.schema.cardMetaData.forEach(def => {
                 metaData.push({
                     label: def.label,
-                    value: row[def.columnIndex] || 'Not available'
+                    value: row[def.columnIndex] || 'Not available',
+                    columnIndex: def.columnIndex // ✨ FIX: Add this to the runtime object!
                 });
             });
 
