@@ -32,7 +32,7 @@ const createFilterGroup = (
         return html`
             <li>
                 <input type="checkbox" class="filter_items" value="${sanitizeHTML(opt)}" id="${inputId}"
-                       data-action="toggle_filter" data-category="${category}" ${isChecked}>
+                       data-action="toggle_filter" data-category="${sanitizeHTML(category)}" ${isChecked}>
                 <label for="${inputId}">${sanitizeHTML(opt)}</label>
             </li>
         `;
@@ -48,7 +48,7 @@ const createFilterGroup = (
                     <button type="button" id="${buttonId}" class="accordion-trigger" 
                             aria-expanded="false" aria-controls="${panelId}" 
                             data-action="toggle_accordion">
-                        <span class="accordion-title">${title}</span>
+                        <span class="accordion-title">${sanitizeHTML(title)}</span>
                         <span class="accordion-icon" aria-hidden="true">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                                 <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
@@ -58,7 +58,7 @@ const createFilterGroup = (
                 </h3>
                 <div id="${panelId}" aria-labelledby="${buttonId}" class="filter-collapse" hidden>
                     <div class="card-body">
-                        <ul aria-label="${title} checkbox filters. Selecting a filter updates the search results.">
+                        <ul aria-label="${sanitizeHTML(title)} checkbox filters. Selecting a filter updates the search results.">
                             ${listItems}
                         </ul>
                     </div>

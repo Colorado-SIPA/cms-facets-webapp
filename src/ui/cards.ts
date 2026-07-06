@@ -14,14 +14,16 @@ export function renderCards(items: ParsedItem[], root: ShadowRoot): void {
 
     container.innerHTML = items.map(item => html`
         <li class="card">
-            <div class="card-body">
+            <div class="card-body" role="group">
                 <h3 class="card-title">
-                    <a href="${sanitizeUrl(item.link)}" target="_blank" class="links">
+                    <a href="${sanitizeUrl(item.link)}" target="_blank" rel="noopener noreferrer" class="links">
                         ${sanitizeHTML(item.title)}
                     </a>
                 </h3>
-                <div class="p_items">
-                    ${renderMetaData(item.metaData)}
+                <div class="card-properties">
+                    <ul class="properties-list">
+                        ${renderMetaData(item.metaData)}
+                    </ul
                 </div>
             </div>
         </li>
@@ -31,8 +33,8 @@ export function renderCards(items: ParsedItem[], root: ShadowRoot): void {
 const renderMetaData = (metaData: MetaDataValue[]): string => {
     return metaData.map(meta => {
         if (meta.label) {
-            return html`<p><span>${meta.label}</span>: ${sanitizeHTML(meta.value)}</p>`;
+            return html`<li><span>${sanitizeHTML(meta.label)}</span>: ${sanitizeHTML(meta.value)}</li>`;
         }
-        return html`<p>${sanitizeHTML(meta.value)}</p>`;
+        return html`<li>${sanitizeHTML(meta.value)}</li>`;
     }).join('');
 };

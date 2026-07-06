@@ -11,7 +11,7 @@ export function injectLayoutSkeleton(root: ShadowRoot): void {
                     <div>
                         <label for="search_text" class="visually-hidden">Filter Search Results</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" name="search_text" id="search_text" placeholder="Filter Search Results"/>
+                            <input type="text" class="form-control" name="search_text" id="search_text" placeholder="Filter Search Results" autocomplete="off"/>
                             <button class="btn-primary" type="button" data-action="submit_search">Search</button>                          
                         </div>
                     </div>
@@ -20,10 +20,10 @@ export function injectLayoutSkeleton(root: ShadowRoot): void {
                 </section>
             </div>
             <div class="main-content">
-                <section id="main-container">
+                <section id="main-container" aria-labelledby="search-results-heading">
                     <h2 id="search-results-heading">Search Results</h2>
                     <div id="pagination-summary" role="status"></div>
-                    <ul class="container_data facets-grid" tabindex="-1"></ul>
+                    <ul class="container_data facets-grid" aria-label="Search results. Links open in a new tab."></ul>
                     <div class="pagination-container"></div>
                 </section>
             </div>

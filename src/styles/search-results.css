@@ -67,11 +67,16 @@
                             }
                         }
 
-                        .p_items {
-                            p {
-                                margin: 0.5rem 0;
-                                span {
-                                    font-weight: bold;
+                        .card-properties {
+                            ul.properties-list {
+                                list-style-type: none;
+                                padding-left: 0;
+
+                                li {
+                                    margin: 0.5rem 0;
+                                    span {
+                                        font-weight: bold;
+                                    }
                                 }
                             }
                         }

@@ -32,8 +32,8 @@ export function renderPagination(currentPage: number, totalPages: number, root: 
     const buttonsHtml: string[] = [];
 
     buttonsHtml.push(html`
-        <button type="button" class="page-link prev-btn" data-action="prev_page" ${currentPage === 1 ? 'disabled' : ''}>
-            &laquo; Prev
+        <button type="button" class="page-link prev-btn" data-action="prev_page" aria-label="Go to previous page" ${currentPage === 1 ? 'disabled' : ''}>
+            <span aria-hidden="true">&laquo;</span> Prev
         </button>
     `);
 
@@ -42,15 +42,15 @@ export function renderPagination(currentPage: number, totalPages: number, root: 
         const ariaCurrent = i === currentPage ? 'aria-current="page"' : '';
 
         buttonsHtml.push(html`
-            <button type="button" class="page-link ${isActive}" data-action="go_to_page" data-page="${i}" ${ariaCurrent}>
+            <button type="button" class="page-link ${isActive}" data-action="go_to_page" data-page="${i}" aria-label="Go to page ${i}" ${ariaCurrent}>
                 ${i}
             </button>
         `);
     }
 
     buttonsHtml.push(html`
-        <button type="button" class="page-link next-btn" data-action="next_page" ${currentPage === totalPages ? 'disabled' : ''}>
-            Next &raquo;
+        <button type="button" class="page-link next-btn" data-action="next_page" aria-label="Go to next page" ${currentPage === totalPages ? 'disabled' : ''}>
+            Next <span aria-hidden="true">&raquo;</span>
         </button>
     `);
 

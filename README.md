@@ -35,7 +35,7 @@ This app requires a Google Sheet as a backend data source.
 Simply add the the script to any webpage:
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.0/dist/js/sheets-facets.js" integrity="sha512-jEaqcOdIu3bw/Gxgi3sAYxyTS0kmWSblPltippBa7jDCMgIFRezr/a8/guGDBhQIjGvf4dHJdPXxEt5rKSK1XQ==" crossorigin="anonymous"></script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.1/dist/js/sheets-facets.js" crossorigin="anonymous"></script>
 ```
 
 The script can appear before or after the HTML element (`<sheets-facets>`), but the best practice is to put it in the `<head>` or as close as possible.

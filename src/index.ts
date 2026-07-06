@@ -61,6 +61,8 @@ export class SheetsFacetsWidget extends HTMLElement {
             setupEventListeners(this, this.root);
 
             if (this.hidden) this.hidden = false;
+            this.role = 'region';
+            this.ariaLabel = 'Search Application';
 
         } catch (error) {
             console.error('[Climate Facets] Failed to initialize widget:', error);
