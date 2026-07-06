@@ -81,8 +81,8 @@ export class SheetsFacetsWidget extends HTMLElement {
 
     public updateView() {
         const newFilteredData = applyFilters(
-            this.state.rawData, 
-            this.state.activeFilters, 
+            this.state.rawData,
+            this.state.activeFilters,
             this.state.availableFilters,
             this.state.searchQuery
         );
@@ -94,7 +94,6 @@ export class SheetsFacetsWidget extends HTMLElement {
         const endIndex = startIndex + this.state.config.itemsPerPage;
         const itemsToDisplay = this.state.filteredData.slice(startIndex, endIndex);
 
-        // Pass this.root to UI renderers
         renderCards(itemsToDisplay, this.root);
         renderPagination(this.state.currentPage, this.state.totalPages, this.root);
         updateSummary(this.state.filteredData.length, this.state.currentPage, this.state.config.itemsPerPage, this.root);
@@ -117,6 +116,27 @@ export class SheetsFacetsWidget extends HTMLElement {
         if (resultsHeading) {
             resultsHeading.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+    }
+
+    public clearAllFilters() {
+        Object.keys(this.state.activeFilters).forEach(category => {
+            this.state.activeFilters[category] = [];
+        });
+
+        this.state.searchQuery = '';
+        this.state.currentPage = 1;
+
+        const checkboxes = this.root.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+            cb.checked = false;
+        });
+
+        const searchInput = this.root.querySelector<HTMLInputElement>('input[type="search"], input[type="text"]');
+        if (searchInput) {
+            searchInput.value = '';
+        }
+
+        this.updateView();
     }
 }
 

@@ -7,36 +7,34 @@
         .pagination-flex {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             gap: 0.5rem;
             margin: 2rem 0;
 
-            .page-link {
-                display: inline-flex;
+            button.page-link {
                 align-items: center;
-                justify-content: center;
-                min-width: 2.75rem;
-                min-height: 2.75rem;
-                padding: 0.5rem 0.85rem;
-                border: 1px solid #949494;
                 background-color: #fff;
+                border: 1px solid #949494;
                 color: #333;
+                display: inline-flex;
                 font-family: Roboto, Arial, sans-serif;
                 font-size: 1rem;
                 font-weight: 500;
-                cursor: pointer;
+                justify-content: center;
+                min-height: 2.75rem;
+                min-width: 2.75rem;
+                padding: 0.5rem 0.85rem;
                 transition:
                     background-color 0.2s ease,
                     color 0.2s ease;
 
                 &:hover:not(:disabled) {
-                    background-color: #0056b3;
-                    color: #fff;
+                    text-decoration: underline;
                 }
 
                 &:focus-visible {
-                    outline: 2px solid #0056b3;
+                    outline: 2px solid #001970;
                     outline-offset: 2px;
                 }
 

@@ -4,13 +4,13 @@ import type { SheetsFacetsWidget } from './index';
 
 export function setupEventListeners(widget: SheetsFacetsWidget, root: ShadowRoot): void {
     // 1. Global Click Delegation (Attached to root)
-    root.addEventListener('click', (event) => {
-        // ... (all the logic inside the switch block stays exactly the same)
-        const target = (event.target as HTMLElement).closest('[data-action]');
-        if (!target) return;
+    root.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        const actionElement = target.closest('[data-action]');
 
-        const action = target.getAttribute('data-action');
+        if (!actionElement) return;
 
+        const action = actionElement.getAttribute('data-action');
         switch (action) {
             case 'toggle_filter':
                 const checkbox = target as HTMLInputElement;
@@ -25,11 +25,6 @@ export function setupEventListeners(widget: SheetsFacetsWidget, root: ShadowRoot
                     widget.state.searchQuery = searchInputClick.value;
                     widget.state.currentPage = 1;
                     widget.updateView();
-
-                    const resultsGrid = root.querySelector('.container_data') as HTMLElement;
-                    if (resultsGrid) {
-                        resultsGrid.focus({ preventScroll: true });
-                    }
                 }
                 break;
 
@@ -71,6 +66,10 @@ export function setupEventListeners(widget: SheetsFacetsWidget, root: ShadowRoot
                     }
                 }
                 break;
+
+            case 'clear_filters':
+                e.preventDefault();
+                widget.clearAllFilters();
         }
     });
 

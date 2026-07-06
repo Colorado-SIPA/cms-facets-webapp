@@ -15,9 +15,11 @@ export function renderCards(items: ParsedItem[], root: ShadowRoot): void {
     container.innerHTML = items.map(item => html`
         <li class="card">
             <div class="card-body">
-                <a href="${sanitizeUrl(item.link)}" target="_blank" class="links">
-                    <h3 class="card-title">${sanitizeHTML(item.title)}</h3>
-                </a>
+                <h3 class="card-title">
+                    <a href="${sanitizeUrl(item.link)}" target="_blank" class="links">
+                        ${sanitizeHTML(item.title)}
+                    </a>
+                </h3>
                 <div class="p_items">
                     ${renderMetaData(item.metaData)}
                 </div>

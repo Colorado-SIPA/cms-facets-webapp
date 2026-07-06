@@ -2,35 +2,35 @@
 
 This custom HTML element uses a Google Sheet as a database to create a faceted search interface capable of filtering the displayed results.
 
-Built with TypeScript and Vite, the contents of this custom element are completely encapsulated using the Shadow DOM, meaning its styles will never conflict with the parent website. It is configured entirely through declarative HTML elements, with no JavaScript required by the end user.
+Built with TypeScript and Vite, the contents of this custom element are completely encapsulated using the [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM), meaning its styles will never conflict with the parent website. It is configured entirely through declarative HTML elements, with no JavaScript required by the end user.
 
 See the [live demo](https://components.sf-prod-uat.colorado.gov/google-sheets-faceted-search) in action.
 
 
 ## ✨ Features
 
-* **Google Sheets as a CMS:** Uses a public Google Sheet as a headless database. Editors can update content in real-time without touching code.
+* **Google Sheets as a CMS:** Uses a publicly viewable Google Sheet as a data source for the cards.
 * **Declarative HTML Configuration:** Define your filter taxonomies and card layouts directly in your HTML markup.
-* **Shadow DOM Encapsulation:** 100% protected CSS. The parent website's styles cannot break the widget, and the widget's styles cannot leak out.
-* **Optimized & Minified:** The entire app is 18KB of highly optimized JavaScript in one file.
+* **Shadow DOM Encapsulation:** 100% protected CSS. The parent website's styles cannot break the app, and the app styles cannot leak out.
+* **Optimized & Minified:** The entire app is 18kB (5.9 kB gzipped) of highly optimized JavaScript in one production ready bundle.
 
 
 ## 🚀 Quick Start
 
-To use the widget on any website, import the bundled JavaScript file and drop the custom `<sheets-facets>` element into your HTML. 
+The app can be run in any environment that supports HTML/CSS/JS. Follow the steps below to configure the app:
 
 ### 1. 📊 Google Sheets Configuration
 
 This app requires a Google Sheet as a backend data source. 
 
 + Ensure that the sheet is shared as public (i.e. File > Share > Share with Others > Anyone with the Link)
-+ Get the ID of your Google Sheet from the URL: 
-    + e.g. `https://docs.google.com/spreadsheets/d/[YOUR-ID-HERE]/edit?gid=0#gid=0`
-+ Get the name of the sheet tab within the spreadsheet where your content will come from (e.g. "Sheet 1")
-+ Get the column numbers (zero-indexed) for each data cell that you want to display in the cards
++ Gather the following information, which will be needed when we create the custom HTML element:
+    + The ID of your Google Sheet from the URL: 
+        + e.g. `https://docs.google.com/spreadsheets/d/[YOUR-ID-HERE]/edit?gid=0#gid=0`
+    + Name of the sheet tab within the spreadsheet where your content will come from (e.g. "Sheet 1")
+    + Column numbers (zero-indexed) for each data cell that you want to display in the cards
 
 ### 2. 💥 Script Installation
-The app can be run in any environment that supports HTML/CSS/JS.
 
 Simply add the the script to any webpage:
 
@@ -43,7 +43,7 @@ The script can appear before or after the HTML element (`<sheets-facets>`), but 
 
 ### 3. 🚧 The HTML Structure
 
-After installing the script, you will need to create the custom HTML element with the correct child elements. This tells the widget exactly how to map the Google Sheet columns to the UI.
+After installing the script, you will need to create the custom HTML element with the correct child elements. This tells the app exactly how to map the Google Sheet columns to the UI.
 
 ```html
 <sheets-facets sheet-id="YOUR_GOOGLE_SHEET_ID" sheet-name="Resources" items-per-page="20" hidden>
@@ -145,6 +145,30 @@ After installing the script, you will need to create the custom HTML element wit
     + `Label`: (Optional) If provided, this text will be displayed as bold text with a colon prior to the displaying of the content.
 
 
+### Project Architecture
+
+#### Feching Google Sheets Data
+This app does not use the official Google Sheets API, allowing us to bypass using the heavy REST API, which would require an API key to be either served over a secure backend server or transmitted via JavaScript for all to see (and steal or abuse).
+
+Instead, we are using the Google Visualization API. (e.g. `https://docs.google.com/spreadsheets/d/[SHEET-ID-HERE]/gviz/tq?tqx=out:csv`). The visualization API is an older, undocumented endpoint that Google uses internally to draw charts and graphs. By adding `tqx=out:csv` to the end of the URL, we are telling Google to format the output as a CSV.
+
+The benefits of this approach include:
++ Instant real time updates
++ Targeting by sheet name
++ A SQL like [query language](https://developers.google.com/chart/interactive/docs/querylanguage)
++ High threshold for Google rate limiters
+
+The tradeoff is that this endpoint is intended to specifically to power Google Charts. It is not an officially documented public REST API. While millions of web apps rely on it and Google is highly unlikely to turn it off without warning, ***there is no official SLA for enterprise apps***.
+
+#### Module Organization
+
+* **`src/index.ts`:** The main Web Component class definition and Shadow DOM initialization.
+* **`src/config.ts`:** Parses the declarative HTML tags into the internal state configuration.
+* **`src/api/`:** Handles the zero-dependency fetching and CSV parsing from the Google `gviz/tq` endpoint.
+* **`src/ui/`:** Contains the HTML template literals that render the UI (cards, filters, pagination).
+* **`src/styles/`:** The modular CSS files. These are imported inline and injected directly into the Shadow DOM.
+
+
 ## 💻 Local Development
 
 If you want to develop the project, you will need Node.js installed.
@@ -166,10 +190,3 @@ Compile the TypeScript and minify the CSS/HTML into the `dist/` folder for deplo
 ```bash
 npm run build
 ```
-
-### Project Architecture
-* **`src/index.ts`:** The main Web Component class definition and Shadow DOM initialization.
-* **`src/config.ts`:** Parses the declarative HTML tags into the internal state configuration.
-* **`src/api/`:** Handles the zero-dependency fetching and CSV parsing from the Google `gviz/tq` endpoint.
-* **`src/ui/`:** Contains the HTML template literals that render the UI (cards, filters, pagination).
-* **`src/styles/`:** The modular CSS files. These are imported inline and injected directly into the Shadow DOM.

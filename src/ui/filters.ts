@@ -58,7 +58,9 @@ const createFilterGroup = (
                 </h3>
                 <div id="${panelId}" aria-labelledby="${buttonId}" class="filter-collapse" hidden>
                     <div class="card-body">
-                        <ul>${listItems}</ul>
+                        <ul aria-label="${title} checkbox filters. Selecting a filter updates the search results.">
+                            ${listItems}
+                        </ul>
                     </div>
                 </div>
             </div>

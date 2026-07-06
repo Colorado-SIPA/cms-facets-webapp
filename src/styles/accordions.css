@@ -3,22 +3,20 @@
         /* --- Accordion Filters --- */
         .filters {
             .accordion-item {
-                margin-bottom: 1rem;
-                border: 1px solid #ccc;
+                margin-bottom: 1.2rem;
+                border: 1px solid #949494;
                 border-radius: 0.25rem;
                 overflow: hidden;
 
-                & h3.card-header {
-                    background-color: #efefef;
-                    border-bottom: 2px solid #ccc;
+                h3.card-header {
                     margin: 0;
 
-                    & button.accordion-trigger {
+                    button.accordion-trigger {
                         width: 100%;
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
-                        background-color: transparent;
+                        background-color: #fff;
                         border: none;
                         padding: 0.75rem 1rem;
                         text-align: left;
@@ -27,16 +25,13 @@
                         font-size: 1rem;
                         font-weight: 600;
                         color: #333;
-                        transition: background-color 0.2s ease;
 
-                        &:hover,
-                        &:focus {
-                            background-color: #e2e2e2;
+                        &:focus-visible {
                             outline: 2px solid #0056b3;
                             outline-offset: -2px;
                         }
 
-                        &[aria-expanded="false"] .accordion-icon {
+                        &[aria-expanded="false"] .accordion-icon {  
                             transform: rotate(-90deg);
                         }
 
@@ -50,12 +45,13 @@
 
                 /* accordion content panels */
                 .filter-collapse {
+                    border-top: 1px solid #ccc;
 
                     &[hidden] {
                         display: none !important;
                     }
 
-                    & div.card-body {
+                    div.card-body {
                         display: flex;
                         flex-direction: column;
 
