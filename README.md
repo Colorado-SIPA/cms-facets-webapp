@@ -8,20 +8,22 @@ See the [live demo](https://components.sf-prod-uat.colorado.gov/google-sheets-fa
 
 ## ✨ Features
 
-- **Google Sheets as a CMS:** Uses a publicly viewable Google Sheet as a data source for the cards.
+- **Google Sheets as a CMS:** Uses a publicly viewable Google Sheet as a data source for the UI cards.
 - **Declarative HTML Configuration:** Define your filter taxonomies and card layouts directly in your HTML markup.
-- **Shadow DOM Encapsulation:** 100% protected CSS. The parent website's styles cannot break the app, and the app styles cannot leak out.
-- **Optimized & Minified:** The entire app is 18kB (5.9 kB gzipped) of highly optimized JavaScript in one production ready bundle.
+- **Shadow DOM Encapsulation:** 100% protected CSS. The parent website's styles cannot break the app.
+- **Optimized & Minified:** The entire app is 18kB (5.95 kB gzipped) of highly optimized JavaScript in one production ready bundle.
 
 ## 🚀 Quick Start
 
-The app can be run in any environment that supports HTML/CSS/JS. Follow the steps below to configure the app:
+The app can be run in any environment that supports HTML/CSS/JS. 
+
+Follow the steps below to configure the app:
 
 ### 1. 📊 Google Sheets Configuration
 
 This app requires a Google Sheet as a backend data source.
 
-- Ensure that the sheet is shared as public (i.e. File > Share > Share with Others > Anyone with the Link)
+- Ensure that the sheet is shared as public (i.e. *File > Share > Share with Others > Anyone with the Link*)
 - Gather the following information, which will be needed when we create the custom HTML element:
     - The ID of your Google Sheet from the URL:
         - e.g. `https://docs.google.com/spreadsheets/d/[YOUR-ID-HERE]/edit?gid=0#gid=0`
