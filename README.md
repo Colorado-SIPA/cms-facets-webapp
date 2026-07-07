@@ -59,14 +59,14 @@ After installing the script, you will need to create the custom HTML element wit
         </filter-group>
         <filter-group>
             <filter-title>Topic Area</filter-title>
-            <filter-item>Agriculture & Land Management</filter-item>
+            <filter-item>Agriculture and Land Management</filter-item>
             <filter-item>Businesses</filter-item>
-            <filter-item>Energy & Utilities</filter-item>
+            <filter-item>Energy and Utilities</filter-item>
             <filter-item>Equity</filter-item>
             <filter-item>General Climate</filter-item>
-            <filter-item>Industry & Manufacturing</filter-item>
-            <filter-item>Land Use, Buildings, & Housing</filter-item>
-            <filter-item>Public Health & Wellbeing</filter-item>
+            <filter-item>Industry and Manufacturing</filter-item>
+            <filter-item>Land Use, Buildings, and Housing</filter-item>
+            <filter-item>Public Health and Wellbeing</filter-item>
             <filter-item>Resilience</filter-item>
             <filter-item>Transportation</filter-item>
         </filter-group>
