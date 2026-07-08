@@ -156,7 +156,7 @@ After installing the script, you will need to create the custom HTML element wit
 
 ### Project Architecture
 
-#### Feching Google Sheets Data
+#### Fetching Google Sheets Data
 
 This app does not use the official Google Sheets API, allowing us to bypass using the heavy REST API, which would require an API key to be either served over a secure backend server or transmitted via JavaScript for all to see (and steal or abuse).
 
