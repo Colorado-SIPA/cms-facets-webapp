@@ -30,44 +30,46 @@ export function applyFilters(
             return regex.test(fullText);
         });
     }
-
+    
     // 2. Generic Checkbox Filtering
     for (const [filterGroupLabel, selectedItems] of Object.entries(activeFilters)) {
         if (selectedItems.length > 0) {
 
             const targetCols = availableFilters[filterGroupLabel]?.targetColumns || [];
 
+            // Retrieve the operator from the configuration (default to 'or')
+            const operator = availableFilters[filterGroupLabel]?.operator || 'any';
+
             result = result.filter(item => {
 
-                // If the HTML specified columns (e.g. cols="1, 3"), ONLY search those columns
-                if (targetCols.length > 0) {
-                    return selectedItems.some(selected => {
+                // Extract the evaluation logic into a helper function
+                const isMatch = (selected: typeof selectedItems[0]) => {
+                    // If the HTML specified columns (e.g. cols="1, 3")
+                    if (targetCols.length > 0) {
                         return targetCols.some(colIndex => {
                             const metaDataField = item.metaData.find(m => m.columnIndex === colIndex)
                                 || item.modalMetaData.find(m => m.columnIndex === colIndex);
                             return containsAny(metaDataField?.value, [selected.value]);
                         });
-                    });
-                }
+                    }
 
-                // Dynamic Fallback Mapping
-                return selectedItems.some(selected => {
-                    // Try to map the search to the Group Title (e.g., standard "Services Offered" column)
+                    // Dynamic Fallback Mapping
                     let matchingMeta = item.metaData.find(m => m.label?.toLowerCase() === filterGroupLabel.toLowerCase())
                         || item.modalMetaData.find(m => m.label?.toLowerCase() === filterGroupLabel.toLowerCase());
 
-                    // If the group column doesn't exist, map it to the Checkbox Label (e.g., "Service In Spanish" column)
                     if (!matchingMeta) {
                         matchingMeta = item.metaData.find(m => m.label?.toLowerCase() === selected.label.toLowerCase())
                             || item.modalMetaData.find(m => m.label?.toLowerCase() === selected.label.toLowerCase());
-                    };
+                    }
 
                     const itemValue = matchingMeta ? matchingMeta.value : undefined;
                     return containsAny(itemValue, [selected.value]);
-                });
+                };
+
+                // Apply either AND (.every) or OR (.some) based on the config
+                return operator === 'all' ? selectedItems.every(isMatch) : selectedItems.some(isMatch);
             });
         }
     }
-
     return result;
 }

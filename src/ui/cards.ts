@@ -80,7 +80,7 @@ const renderMetaData = (metaData: MetaDataValue[], _title: string): string => {
                     if (!seen.has(lowerItem)) {
                         seen.add(lowerItem);
 
-                        // ✨ NEW: Capitalize the first letter of the string for the UI
+                        // Capitalize the first letter of the string for the UI
                         const displayItem = cleanItem.charAt(0).toUpperCase() + cleanItem.slice(1);
 
                         uniqueItems.push(displayItem);

@@ -11,7 +11,7 @@ See the [live demo](https://components.sf-prod-uat.colorado.gov/google-sheets-fa
 - **Google Sheets as a CMS:** Uses a publicly viewable Google Sheet as a data source for the UI cards.
 - **Declarative HTML Configuration:** Define your filter taxonomies and card layouts directly in your HTML markup.
 - **Shadow DOM Encapsulation:** 100% protected CSS. The parent website's styles cannot break the app.
-- **Optimized & Minified:** The entire app is 26kB (7.5 kB gzipped) of highly optimized JavaScript in one production ready bundle.
+- **Optimized & Minified:** The entire app is 28kB (7.8 kB gzipped) of highly optimized JavaScript / CSS in one production ready bundle.
 
 ## ⚡ Quick Start
 
@@ -100,9 +100,12 @@ After installing the script, you will need to create the custom HTML element wit
 - **Description:** The wrapper for the entire app.
 - **Attributes:**
     - `sheet-id`: (Required) The unique ID found in your Google Sheet's URL.
-    - `sheet-name`: (Required) The exact name of the tab in the spreadsheet containing your data (e.g., `Resources`).
-    - `items-per-page`: (Optional) The number of results to display before paginating. Defaults to `20`.
+    - `sheet-name`: (Required) The exact name of the tab in the spreadsheet containing your data
+    - `items-per-page`: (Optional) The number of results to display before paginating.
+        - ***Values accepted:*** Any number that is less than the total number of entries.
+        - ***Default value:*** `20`
     - `hidden`: (Optional) Prevents the flash of unstyled content, which is common with custom elements.
+        - ***Note:*** This is a boolean attribute that does not accept a value
 
 ---
 #### Search Filters Section:
@@ -114,7 +117,14 @@ After installing the script, you will need to create the custom HTML element wit
 ##### `<filter-group>`
 - **Description:** Establishes an accordion with grouped checkbox inputs that function as filters on the content.
 - **Attributes:**
-    - `cols`: (Optional) Specifies the column numbers from the Google spreadsheet to search. Multiple comma separated values are allowed. Note that columns are zero indexed.
+    - `cols`: (Optional) Specifies the column numbers from the Google spreadsheet to search. 
+        - ***Values accepted:*** Any number that represents a valid column in the Google Sheet. Multiple comma separated values are allowed. Note that columns are zero indexed.
+        - ***Default value:*** None - all columns are searched
+    - `match`: (Optional) Determines how search results are filtered when multiple checkboxes are selected.
+        - ***Values accepted:*** 
+            - `Any` returns entries that have at least one filter matching (e.g. filter_1 OR filter_2)
+            - `All` requires that each filter applied be matched for an entry to be returned (e.g. filter_1 AND filter_2)
+        - ***Default value:*** `Any`
 
 ##### `<filter-title>`
 - **Description:** Creates the title for the accordion group.
@@ -123,7 +133,9 @@ After installing the script, you will need to create the custom HTML element wit
 ##### `<filter-item>`
 - **Description:** A keyword or keyphrase that will be searched for. It will also be used to create the checkbox label on the filter.
 - **Attributes:** 
-    - `value`: (Optional) Defines the underlying value the search engine looks for in the spreadsheet (e.g., "Yes" or "True"). If omitted, the engine searches for the exact text inside the element.
+    - `value`: (Optional) Defines the text string to search for when filtering search results. This is especially useful when the text in your column is different from the text used as the filter label. Examples might include entire columns of Yes/No or True/False values.
+        - ***Values accepted:*** Any string of characters
+        - ***Default value:*** If omitted, the exact text inside the element will be searched (case insensitive).
 
 ---
 #### Search Results Section and UI Cards:
@@ -139,12 +151,16 @@ After installing the script, you will need to create the custom HTML element wit
 ##### `<card-link>` (optional)
 - **Description:** Defines a column in the Google Sheet that contains a fully formed URL to be used for the linked title.
 - **Attributes:**
-    - `column`: (Required) The column number (zero-indexed) from the Google spreadsheet where the data will be pulled from.
+    - `column`: (Required) The zero-indexed column number from the Google spreadsheet where the data will be pulled from.
+        - ***Values accepted:*** Any number that represents a valid column in the Google Sheet.
+        - ***Default value:*** None. If this element is omitted, the card title will not be linked.
 
 ##### `<card-title>` (required)
 - **Description:** Defines a column in the Google Sheet that contains the text to use for the linked title.
 - **Attributes:**
-    - `column`: (Required) The column number (zero-indexed) from the Google spreadsheet where the data will be pulled from.
+    - `column`: (Required) The zero-indexed column number from the Google spreadsheet where the data will be pulled from.
+        - ***Values accepted:*** Any number that represents a valid column in the Google Sheet.
+        - ***Default value:*** None. If this element is omitted, the card title will display "Not Available."
 
 ##### `<card-body>` (required)
 - **Description:** The wrapper for the content section on the search results UI cards.
@@ -154,14 +170,29 @@ After installing the script, you will need to create the custom HTML element wit
 - **Description:** Defines a content section to be fetched from a specific column in the Google Sheet. Multiple instances may be used to display values from different columns.
 - **Attributes:**
     - `column`: (Required) The zero-indexed column number from the spreadsheet.
+        - ***Values accepted:*** Any number that represents a valid column in the Google Sheet.
+        - ***Default value:*** None. If this attribute is omitted, the content will not be displayed.
     - `label`: (Optional) If provided, this text will be displayed as bold text with a colon prior to the displaying of the content.
-    - `link-type`: (Optional) Transforms the content into an actionable HTML link. Accepts `web`, `mailto`, or `tel`.
-    - `format`: (Optional) Controls the visual formatting of the data. Accepts `pills` to parse comma-separated data into individual UI chips.
+        - ***Values accepted:*** Any string
+        - ***Default value:*** None. If this attribute is omitted, the content will be displayed without a label.
+    - `link-type`: (Optional) Transforms the content into an actionable HTML link. 
+        - ***Values accepted:*** 
+            - `web`: Creates a standard HTTP web link. Requires a URL.
+            - `mailto`: Creates an link to send an email. Requires an email address.
+            - `tel`: Creates a link to dial a phone number. Requires a valid USA phone number. Creates default anchor text of "Send a Message to [CARD_TITLE]"
+        - ***Default value:*** None. If this attribute is omitted, the content will be displayed as plain text.
+    - `format`: (Optional) Controls the visual formatting of the data.
+        - ***Values accepted:*** 
+            - `pills`: Parses comma separated data into individual UI chips.
+        - ***Default value:*** None. If this attribute is omitted, the content will be displayed as plain text.
 
 ##### `<card-action>` (optional)
 - **Description:** Creates a button at the bottom of the card used to interact with the entry.
 - **Attributes:**
-    - `trigger`: (Required) Determines the action of the button. Set to `modal` to open a dialog containing the full entry details.
+    - `trigger`: (Required) Determines the action of the button.
+        - ***Values accepted:*** 
+            - `modal`: Opens a dialog element containing additional details
+        - ***Default value:*** None. If this attribute is omitted, the button will not render.
 
 ---
 #### Modal Window Configuration:
@@ -182,7 +213,8 @@ The use of a modal is completely optional but highly encouraged when the number 
 - **Description:** Defines the column in the Google Sheet that contains the text to use for the primary modal heading (`<h2>`). If omitted, it will fall back to the `<card-title>` mapping.
 - **Attributes:**
     - `column`: (Required) The zero-indexed column number from the spreadsheet.
-- **Default Value:** If the `<modal-title>` is omitted, then the `<card-title>` element will be used to provide a title on the modal window.
+        - ***Values accepted:*** Any number that represents a valid column in the Google Sheet.
+        - ***Default value:*** None. If this attribute or the element is omitted, then the `<card-title>` element will be used to provide a title on the modal window
 
 ##### `<modal-body>` (required)
 - **Description:** Structural wrappers for the body content of the modal.
@@ -192,9 +224,21 @@ The use of a modal is completely optional but highly encouraged when the number 
 - **Description:** Defines a content section to be fetched from a specific column in the Google Sheet. Multiple instances may be used to display values from different columns.
 - **Attributes:**
     - `column`: (Required) The zero-indexed column number from the spreadsheet.
+        - ***Values accepted:*** Any number that represents a valid column in the Google Sheet.
+        - ***Default value:*** None. If this attribute is omitted, the content will not display.
     - `label`: (Optional) If provided, this text will be displayed as bold text with a colon prior to the displaying of the content.
-    - `link-type`: (Optional) Transforms the content into an actionable HTML link. Accepts `web`, `mailto`, or `tel`.
-    - `format`: (Optional) Controls the visual formatting of the data. Accepts `pills` to parse comma-separated data into individual UI chips.
+        - ***Values accepted:*** Any string
+        - ***Default value:*** None. If this attribute is omitted, the content will be displayed without a label.
+    - `link-type`: (Optional) Transforms the content into an actionable HTML link.
+        - ***Values accepted:*** 
+            - `web`: Creates a standard HTTP web link. Requires a URL.
+            - `mailto`: Creates an link to send an email. Requires an email address.
+            - `tel`: Creates a link to dial a phone number. Requires a valid USA phone number. Creates default anchor text of "Send a Message to [CARD_TITLE]"
+        - ***Default value:*** None. If this attribute is omitted, the content will be displayed as plain text.
+    - `format`: (Optional) Controls the visual formatting of the data.
+        - ***Values accepted:*** 
+            - `pills`: Parses comma separated data into individual UI chips.
+        - ***Default value:*** None. If this attribute is omitted, the content will be displayed as plain text.
 
 
 ---

@@ -66,6 +66,7 @@ export type ActiveFilters = Record<string, FilterItemDef[]>;
 export interface FilterGroupDef {
     items: FilterItemDef[];
     targetColumns: number[];
+    operator?: 'any' | 'all';
 }
 
 // 5. Application State

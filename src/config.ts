@@ -13,13 +13,13 @@ export function initializeConfig(element: HTMLElement): AppConfig {
     const availableFilters: Record<string, FilterGroupDef> = {};
     const filterGroups = element.querySelectorAll('filter-group');
 
-filterGroups.forEach(group => {
+    filterGroups.forEach(group => {
         const titleEl = group.querySelector('filter-title');
         if (!titleEl || !titleEl.textContent) return;
 
         const title = titleEl.textContent.trim();
         const itemEls = group.querySelectorAll('filter-item');
-        
+
         const items = Array.from(itemEls).map(el => {
             const label = el.textContent?.trim() || '';
             const value = el.getAttribute('value') || label;
@@ -34,13 +34,19 @@ filterGroups.forEach(group => {
             return []
         })();
 
+        // Check for the match attribute (default to 'or' if omitted)
+        const matchAttr = group.getAttribute('match');
+        const operator = matchAttr && matchAttr.toLowerCase() === 'all' ? 'all' : 'any';
+
         if (items.length > 0) {
             availableFilters[title] = {
                 items,
-                targetColumns
+                targetColumns,
+                operator
             };
         }
     });
+    
     // 2. Parse Card Layout from the DOM
     const titleEl = element.querySelector('card-title');
     const linkEl = element.querySelector('card-link');
