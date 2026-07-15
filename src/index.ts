@@ -15,11 +15,15 @@ import type { AppState, ActiveFilters } from './types';
 
 export class SheetsFacetsWidget extends HTMLElement {
     public state!: AppState;
-    public root: ShadowRoot;
+    private root: HTMLElement | ShadowRoot;
 
     constructor() {
         super();
-        this.root = this.attachShadow({ mode: 'open' });
+        if (this.hasAttribute('no-shadow')) {
+            this.root = this;
+        } else {
+            this.root = this.attachShadow({ mode: 'open' });
+        }
     }
 
     async connectedCallback() {
@@ -45,11 +49,18 @@ export class SheetsFacetsWidget extends HTMLElement {
                 lastFocusedElement: null
             };
 
+            if (this.hasAttribute('no-shadow')) {
+                Array.from(this.children).forEach(child => {
+                    (child as HTMLElement).style.display = 'none';
+                });
+            }
+
             const styleTag = document.createElement('style');
             styleTag.textContent = styles;
             this.root.appendChild(styleTag);
 
-            injectLayoutSkeleton(this.root);
+            const hasFilters = Object.keys(this.state.availableFilters).length > 0;
+            injectLayoutSkeleton(this.root as ShadowRoot, hasFilters);
 
             const mainData = await fetchMainData(this.state.config);
 
@@ -58,13 +69,11 @@ export class SheetsFacetsWidget extends HTMLElement {
             this.state.totalPages = Math.ceil(mainData.length / this.state.config.itemsPerPage);
             this.state.isLoading = false;
 
-            renderFilters(this.state.availableFilters, this.state.activeFilters, this.root);
+            renderFilters(this.state.availableFilters, this.state.activeFilters, this.root as ShadowRoot);
             this.updateView();
-            setupEventListeners(this, this.root);
+            setupEventListeners(this, this.root as ShadowRoot);
 
             if (this.hidden) this.hidden = false;
-            this.role = 'region';
-            this.ariaLabel = 'Search Application';
 
         } catch (error) {
             console.error('[Climate Facets] Failed to initialize widget:', error);
@@ -98,9 +107,9 @@ export class SheetsFacetsWidget extends HTMLElement {
         const endIndex = startIndex + this.state.config.itemsPerPage;
         const itemsToDisplay = this.state.filteredData.slice(startIndex, endIndex);
 
-        renderCards(itemsToDisplay, this.root, this.state.config);
-        renderPagination(this.state.currentPage, this.state.totalPages, this.root);
-        updateSummary(this.state.filteredData.length, this.state.currentPage, this.state.config.itemsPerPage, this.root);
+        renderCards(itemsToDisplay, this.root as ShadowRoot, this.state.config);
+        renderPagination(this.state.currentPage, this.state.totalPages, this.root as ShadowRoot);
+        updateSummary(this.state.filteredData.length, this.state.currentPage, this.state.config.itemsPerPage, this.root as ShadowRoot);
     }
 
     public toggleFilterInstance(category: keyof ActiveFilters, label: string, value: string) {
@@ -147,11 +156,11 @@ export class SheetsFacetsWidget extends HTMLElement {
         const item = this.state.filteredData.find(i => i.id === itemId);
         if (!item) return;
         this.state.lastFocusedElement = triggerBtn;
-        renderAndOpenModal(item, this.root);
+        renderAndOpenModal(item, this.root as ShadowRoot);
     }
 
     public closeModal() {
-        hideModal(this.root);
+        hideModal(this.root as ShadowRoot);
 
         if (this.state.lastFocusedElement) {
             this.state.lastFocusedElement.focus();

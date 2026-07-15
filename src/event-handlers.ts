@@ -13,7 +13,7 @@ export function setupEventListeners(widget: SheetsFacetsWidget, root: ShadowRoot
         if (!actionElement) return;
 
         const action = actionElement.getAttribute('data-action');
-        
+
         switch (action) {
             case 'toggle_filter':
                 const checkbox = target as HTMLInputElement;
@@ -58,7 +58,7 @@ export function setupEventListeners(widget: SheetsFacetsWidget, root: ShadowRoot
                 break;
 
             case 'toggle_accordion':
-                const btn = target as HTMLButtonElement;
+                const btn = actionElement as HTMLButtonElement;
                 const isExpanded = btn.getAttribute('aria-expanded') === 'true';
                 btn.setAttribute('aria-expanded', (!isExpanded).toString());
 

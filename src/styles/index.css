@@ -1,7 +1,6 @@
 @import 'global.css';
 @import 'sidebar.css';
-@import 'accordions.css';
 @import 'search-results.css';
+@import 'card.css';
 @import 'pagination.css';
 @import 'modal.css';
-@import 'card.css';
