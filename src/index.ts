@@ -3,6 +3,7 @@ import { fetchMainData } from './api/fetch-main-data';
 import { html } from './utils/html';
 import { initializeConfig } from './config';
 import { injectLayoutSkeleton } from './ui/skeleton';
+import { renderAndOpenModal, hideModal } from './ui/modal';
 import { renderCards } from './ui/cards';
 import { renderFilters } from './ui/filters';
 import { renderPagination } from './ui/pagination';
@@ -41,6 +42,7 @@ export class SheetsFacetsWidget extends HTMLElement {
                 totalPages: 0,
                 isLoading: true,
                 error: null,
+                lastFocusedElement: null
             };
 
             const styleTag = document.createElement('style');
@@ -96,17 +98,17 @@ export class SheetsFacetsWidget extends HTMLElement {
         const endIndex = startIndex + this.state.config.itemsPerPage;
         const itemsToDisplay = this.state.filteredData.slice(startIndex, endIndex);
 
-        renderCards(itemsToDisplay, this.root);
+        renderCards(itemsToDisplay, this.root, this.state.config);
         renderPagination(this.state.currentPage, this.state.totalPages, this.root);
         updateSummary(this.state.filteredData.length, this.state.currentPage, this.state.config.itemsPerPage, this.root);
     }
 
-    public toggleFilterInstance(category: keyof ActiveFilters, value: string) {
-        const filterArray = this.state.activeFilters[category];
-        const valueIndex = filterArray.indexOf(value);
+    public toggleFilterInstance(category: keyof ActiveFilters, label: string, value: string) {
+        const filterArray = this.state.activeFilters[category as string];
+        const valueIndex = filterArray.findIndex(f => f.label === label);
 
         if (valueIndex === -1) {
-            filterArray.push(value);
+            filterArray.push({ label, value });
         } else {
             filterArray.splice(valueIndex, 1);
         }
@@ -140,6 +142,24 @@ export class SheetsFacetsWidget extends HTMLElement {
 
         this.updateView();
     }
+
+    public openModal(itemId: string, triggerBtn: HTMLElement) {
+        const item = this.state.filteredData.find(i => i.id === itemId);
+        if (!item) return;
+        this.state.lastFocusedElement = triggerBtn;
+        renderAndOpenModal(item, this.root);
+    }
+
+    public closeModal() {
+        hideModal(this.root);
+
+        if (this.state.lastFocusedElement) {
+            this.state.lastFocusedElement.focus();
+            this.state.lastFocusedElement = null;
+        }
+    }
 }
 
-if (!customElements.get('sheets-facets')) customElements.define('sheets-facets', SheetsFacetsWidget);
+if (!customElements.get('sheets-facets')) {
+    customElements.define('sheets-facets', SheetsFacetsWidget);
+}

@@ -41,47 +41,6 @@
                 @media (max-width: 768px) {
                     grid-template-columns: 1fr;
                 }
-
-                /* --- Individual Cards --- */
-                .card {
-                    border: 1px solid #949494;
-                    border-radius: 0.375rem;
-                    padding: 1.25rem;
-                    background: #ffffff;
-
-                    .card-body {
-                        h3.card-title {
-                            color: inherit;
-                            font-size: 1.25rem;
-                            margin: 0 0 0.75rem 0;
-                            font-family: "museo-slab", "Roboto Slab", Georgia, "Times New Roman", serif;
-
-                            a.links {
-                                color: rgb(38, 93, 166);
-                                text-decoration: none;
-
-                                &:hover,
-                                &:focus {
-                                    text-decoration: underline;
-                                }
-                            }
-                        }
-
-                        .card-properties {
-                            ul.properties-list {
-                                list-style-type: none;
-                                padding-left: 0;
-
-                                li {
-                                    margin: 0.5rem 0;
-                                    span {
-                                        font-weight: bold;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
     }

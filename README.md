@@ -6,14 +6,14 @@ Built with TypeScript and Vite, the contents of this custom element are complete
 
 See the [live demo](https://components.sf-prod-uat.colorado.gov/google-sheets-faceted-search) in action.
 
-## ✨ Features
+## 🚀 Features
 
 - **Google Sheets as a CMS:** Uses a publicly viewable Google Sheet as a data source for the UI cards.
 - **Declarative HTML Configuration:** Define your filter taxonomies and card layouts directly in your HTML markup.
 - **Shadow DOM Encapsulation:** 100% protected CSS. The parent website's styles cannot break the app.
-- **Optimized & Minified:** The entire app is 18kB (5.95 kB gzipped) of highly optimized JavaScript in one production ready bundle.
+- **Optimized & Minified:** The entire app is 26kB (7.5 kB gzipped) of highly optimized JavaScript in one production ready bundle.
 
-## 🚀 Quick Start
+## ⚡ Quick Start
 
 The app can be run in any environment that supports HTML/CSS/JS. 
 
@@ -30,17 +30,17 @@ This app requires a Google Sheet as a backend data source.
     - Name of the sheet tab within the spreadsheet where your content will come from (e.g. "Sheet 1")
     - Column numbers (zero-indexed) for each data cell that you want to display in the cards
 
-### 2. 💥 Script Installation
+### 2. 💻 Script Installation
 
-Simply add the the script to any webpage:
+Simply add the script to any webpage:
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.2/dist/js/sheets-facets.js" integrity="sha384-12csvaTP8LxEuEwa1BlfkEc/uVdo07HTOCivetSR6f1lDFZ8+/Me4SlDXTk1yOWP" crossorigin="anonymous"></script>
+<script type="module" src="[https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.2/dist/js/sheets-facets.js](https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.2/dist/js/sheets-facets.js)" integrity="sha384-12csvaTP8LxEuEwa1BlfkEc/uVdo07HTOCivetSR6f1lDFZ8+/Me4SlDXTk1yOWP" crossorigin="anonymous"></script>
 ```
 
 The script can appear before or after the HTML element (`<sheets-facets>`), but the best practice is to put it in the `<head>` or as close as possible.
 
-### 3. 🚧 The HTML Structure
+### 3. 🏗️ The HTML Structure
 
 After installing the script, you will need to create the custom HTML element with the correct child elements. This tells the app exactly how to map the Google Sheet columns to the UI.
 
@@ -54,44 +54,49 @@ After installing the script, you will need to create the custom HTML element wit
             <filter-item>Mitigation</filter-item>
         </filter-group>
         <filter-group>
-            <filter-title>Resource Type</filter-title>
-            <filter-item>Case Studies and Frameworks</filter-item>
-            <filter-item>Data and Maps</filter-item>
-            <filter-item>Legislation</filter-item>
-        </filter-group>
-        <filter-group>
-            <filter-title>Topic Area</filter-title>
-            <filter-item>Agriculture and Land Management</filter-item>
-            <filter-item>Businesses</filter-item>
-            <filter-item>Energy and Utilities</filter-item>
-            <filter-item>Equity</filter-item>
-            <filter-item>General Climate</filter-item>
-            <filter-item>Industry and Manufacturing</filter-item>
-            <filter-item>Land Use, Buildings, and Housing</filter-item>
-            <filter-item>Public Health and Wellbeing</filter-item>
-            <filter-item>Resilience</filter-item>
-            <filter-item>Transportation</filter-item>
+            <filter-title>Service Options</filter-title>
+            <filter-item value="Yes">Service In Spanish</filter-item>
+            <filter-item value="Yes">Serves Region 2</filter-item>
         </filter-group>
     </search-filters>
 
     <search-results>
+        <!-- Card Layout Configuration -->
         <card-layout>
             <card-link column="1">
                 <card-title column="0"></card-title>
             </card-link>
             <card-body>
-                <card-content column="3" label="Area of Work"></card-content>
-                <card-content column="4" label="Resource Type"></card-content>
-                <card-content column="5" label="Topic Area"></card-content>
-                <card-content column="6" label="Who"></card-content>
+                <card-content column="3" label="Area of Work" format="pills"></card-content>
+                <card-content column="4" label="Website" link-type="web"></card-content>
             </card-body>
+            <!-- Optional: Triggers a modal window -->
+            <card-action trigger="modal">View Full Details</card-action>
         </card-layout>
+
+        <!-- Optional: Modal Layout Configuration -->
+        <modal-layout>
+            <modal-header>
+                <modal-title column="0"></modal-title>
+            </modal-header>
+            <modal-body>
+                <modal-content column="3" label="Area of Work" format="pills"></modal-content>
+                <modal-content column="4" label="Website" link-type="web"></modal-content>
+                <modal-content column="5" label="Email" link-type="mailto"></modal-content>
+                <modal-content column="6" label="Phone" link-type="tel"></modal-content>
+            </modal-body>
+        </modal-layout>
     </search-results>
 </sheets-facets>
 ```
 
-#### `<sheets-facets>`
+---
 
+### Element API Reference
+
+#### Main Structure:
+
+##### `<sheets-facets>`
 - **Description:** The wrapper for the entire app.
 - **Attributes:**
     - `sheet-id`: (Required) The unique ID found in your Google Sheet's URL.
@@ -99,60 +104,100 @@ After installing the script, you will need to create the custom HTML element wit
     - `items-per-page`: (Optional) The number of results to display before paginating. Defaults to `20`.
     - `hidden`: (Optional) Prevents the flash of unstyled content, which is common with custom elements.
 
-#### `<search-filters>`
+---
+#### Search Filters Section:
 
+##### `<search-filters>`
 - **Description:** The wrapper for the accordions that contain checkbox filters.
 - **Attributes:** None
 
-#### `<filter-group>`
-
+##### `<filter-group>`
 - **Description:** Establishes an accordion with grouped checkbox inputs that function as filters on the content.
 - **Attributes:**
     - `cols`: (Optional) Specifies the column numbers from the Google spreadsheet to search. Multiple comma separated values are allowed. Note that columns are zero indexed.
 
-#### `<filter-title>`
-
+##### `<filter-title>`
 - **Description:** Creates the title for the accordion group.
 - **Attributes:** None
 
-#### `<filter-item>`
-
+##### `<filter-item>`
 - **Description:** A keyword or keyphrase that will be searched for. It will also be used to create the checkbox label on the filter.
+- **Attributes:** 
+    - `value`: (Optional) Defines the underlying value the search engine looks for in the spreadsheet (e.g., "Yes" or "True"). If omitted, the engine searches for the exact text inside the element.
+
+---
+#### Search Results Section and UI Cards:
+
+##### `<search-results>` (required)
+- **Description:** The wrapper for the card and modal layouts.
 - **Attributes:** None
 
-#### `<search-results>`
-
-- **Description:** The wrapper for the card layout section.
+##### `<card-layout>` (required)
+- **Description:** Defines the layout of each `div.card-body` element and the mappings to the Google Sheet columns where the data will come from.
 - **Attributes:** None
 
-#### `<card-layout>`
-
-- **Description:** This section defines the layout of each `div.card-body` element and the mappings to the Google Sheet columns where the data will come from.
-- **Attributes:** None
-
-#### `<card-link>`
-
+##### `<card-link>` (optional)
 - **Description:** Defines a column in the Google Sheet that contains a fully formed URL to be used for the linked title.
 - **Attributes:**
-    - `column`: (Required) The column number from the Google spreadsheet where the data will be pulled from. Note that columns are zero indexed.
+    - `column`: (Required) The column number (zero-indexed) from the Google spreadsheet where the data will be pulled from.
 
-#### `<card-title>`
-
+##### `<card-title>` (required)
 - **Description:** Defines a column in the Google Sheet that contains the text to use for the linked title.
 - **Attributes:**
-    - `column`: (Required) The column number from the Google spreadsheet where the data will be pulled from. Note that columns are zero indexed.
+    - `column`: (Required) The column number (zero-indexed) from the Google spreadsheet where the data will be pulled from.
 
-#### `<card-body>`
-
+##### `<card-body>` (required)
 - **Description:** The wrapper for the content section on the search results UI cards.
 - **Attributes:** None
 
-#### `<card-content>`
-
-- **Description:** This element defines a content section to be fetched from a specific column in the Google Sheet. Note that multiple instances may be used within a single card to display values from different columns in the spreadsheet.
+##### `<card-content>` (required)
+- **Description:** Defines a content section to be fetched from a specific column in the Google Sheet. Multiple instances may be used to display values from different columns.
 - **Attributes:**
-    - `column`: (Required) The column number from the Google spreadsheet where the data will be pulled from. Note that columns are zero indexed.
-    - `Label`: (Optional) If provided, this text will be displayed as bold text with a colon prior to the displaying of the content.
+    - `column`: (Required) The zero-indexed column number from the spreadsheet.
+    - `label`: (Optional) If provided, this text will be displayed as bold text with a colon prior to the displaying of the content.
+    - `link-type`: (Optional) Transforms the content into an actionable HTML link. Accepts `web`, `mailto`, or `tel`.
+    - `format`: (Optional) Controls the visual formatting of the data. Accepts `pills` to parse comma-separated data into individual UI chips.
+
+##### `<card-action>` (optional)
+- **Description:** Creates a button at the bottom of the card used to interact with the entry.
+- **Attributes:**
+    - `trigger`: (Required) Determines the action of the button. Set to `modal` to open a dialog containing the full entry details.
+
+---
+#### Modal Window Configuration:
+
+NOTE: The modal window is only available if the `<card-action>` element is placed within `<card-layout>`.
+
+The use of a modal is completely optional but highly encouraged when the number of data fields exceeds what can reasonably be displayed on the cards.
+
+##### `<modal-layout>` (optional)
+- **Description:** The wrapper for defining the structure and content of the pop-up details dialog.
+- **Attributes:** None
+
+##### `<modal-header>` (optional)
+- **Description:** Structural wrapper for the modal title, which will be announced to screen readers upon opening.
+- **Attributes:** None
+
+##### `<modal-title>` (optional)
+- **Description:** Defines the column in the Google Sheet that contains the text to use for the primary modal heading (`<h2>`). If omitted, it will fall back to the `<card-title>` mapping.
+- **Attributes:**
+    - `column`: (Required) The zero-indexed column number from the spreadsheet.
+- **Default Value:** If the `<modal-title>` is omitted, then the `<card-title>` element will be used to provide a title on the modal window.
+
+##### `<modal-body>` (required)
+- **Description:** Structural wrappers for the body content of the modal.
+- **Attributes:** None
+
+##### `<modal-content>` (required)
+- **Description:** Defines a content section to be fetched from a specific column in the Google Sheet. Multiple instances may be used to display values from different columns.
+- **Attributes:**
+    - `column`: (Required) The zero-indexed column number from the spreadsheet.
+    - `label`: (Optional) If provided, this text will be displayed as bold text with a colon prior to the displaying of the content.
+    - `link-type`: (Optional) Transforms the content into an actionable HTML link. Accepts `web`, `mailto`, or `tel`.
+    - `format`: (Optional) Controls the visual formatting of the data. Accepts `pills` to parse comma-separated data into individual UI chips.
+
+
+---
 
 ### Project Architecture
 
@@ -179,7 +224,7 @@ The tradeoff is that this endpoint is intended to specifically to power Google C
 - **`src/ui/`:** Contains the HTML template literals that render the UI (cards, filters, pagination).
 - **`src/styles/`:** The modular CSS files. These are imported inline and injected directly into the Shadow DOM.
 
-## 💻 Local Development
+## 🛠️ Local Development
 
 If you want to develop the project, you will need Node.js installed.
 

@@ -14,22 +14,41 @@ export async function fetchMainData(config: AppConfig): Promise<ParsedItem[]> {
         rawData.shift(); // Remove the header row
 
         const parsedData: ParsedItem[] = rawData.map((row, index) => {
-            // ✨ FIX: Use the imported interface instead of the inline type
-            const metaData: MetaDataValue[] = []; 
-            
+            const metaData: MetaDataValue[] = [];
             config.schema.cardMetaData.forEach(def => {
                 metaData.push({
                     label: def.label,
-                    value: row[def.columnIndex] || 'Not available',
-                    columnIndex: def.columnIndex // ✨ FIX: Add this to the runtime object!
+                    value: cleanCellData(row[def.columnIndex]) || 'Not available',
+                    columnIndex: def.columnIndex,
+                    linkType: def.linkType,
+                    format: def.format
                 });
             });
 
+            // Map the Modal Data
+            const modalMetaData: MetaDataValue[] = [];
+            config.schema.modalMetaData.forEach(def => {
+                modalMetaData.push({
+                    label: def.label,
+                    value: cleanCellData(row[def.columnIndex]) || 'Not available',
+                    columnIndex: def.columnIndex,
+                    linkType: def.linkType,
+                    format: def.format
+                });
+            });
+
+            // Handle optional links and titles gracefully
+            const linkVal = config.schema.cardLinkColumn >= 0 ? (cleanCellData(row[config.schema.cardLinkColumn]) || 'Not available') : null;
+            const titleVal = config.schema.cardTitleColumn >= 0 ? (cleanCellData(row[config.schema.cardTitleColumn]) || 'Not available') : 'Not available';
+            const modalTitleVal = config.schema.modalTitleColumn >= 0 ? (cleanCellData(row[config.schema.modalTitleColumn]) || 'Not available') : titleVal;
+
             return {
                 id: `item-${index}`,
-                title: row[config.schema.cardTitleColumn] || 'Not available',
-                link: row[config.schema.cardLinkColumn] || 'Not available',
-                metaData
+                title: titleVal,
+                link: linkVal,
+                metaData,
+                modalTitle: modalTitleVal,
+                modalMetaData
             };
         });
 
@@ -43,4 +62,9 @@ export async function fetchMainData(config: AppConfig): Promise<ParsedItem[]> {
 
 function sortItemsByTitle(items: ParsedItem[]): ParsedItem[] {
     return items.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
+}
+
+function cleanCellData(val: string | undefined): string {
+    if (!val) return 'Not available';
+    return val.replace(/"/g, '');
 }

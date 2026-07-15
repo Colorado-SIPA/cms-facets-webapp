@@ -1,21 +1,25 @@
-// src/event-handlers.ts
-import type { ActiveFilters } from './types';
 import type { SheetsFacetsWidget } from './index';
 
 export function setupEventListeners(widget: SheetsFacetsWidget, root: ShadowRoot): void {
     // 1. Global Click Delegation (Attached to root)
     root.addEventListener('click', (e) => {
         const target = e.target as HTMLElement;
-        const actionElement = target.closest('[data-action]');
+        if (target.tagName === 'DIALOG') {
+            widget.closeModal();
+            return;
+        }
 
+        const actionElement = target.closest('[data-action]') as HTMLElement;
         if (!actionElement) return;
 
         const action = actionElement.getAttribute('data-action');
+        
         switch (action) {
             case 'toggle_filter':
                 const checkbox = target as HTMLInputElement;
-                const category = checkbox.getAttribute('data-category') as keyof ActiveFilters;
-                widget.toggleFilterInstance(category, checkbox.value);
+                const category = checkbox.getAttribute('data-category') as string;
+                const itemLabel = checkbox.getAttribute('data-label') || '';
+                widget.toggleFilterInstance(category, itemLabel, checkbox.value);
                 widget.updateView();
                 break;
 
@@ -70,6 +74,22 @@ export function setupEventListeners(widget: SheetsFacetsWidget, root: ShadowRoot
             case 'clear_filters':
                 e.preventDefault();
                 widget.clearAllFilters();
+                break;
+
+            case 'open_modal':
+                const itemId = actionElement.getAttribute('data-id');
+                if (itemId) widget.openModal(itemId, actionElement as HTMLElement);
+                break;
+
+            case 'close_modal':
+                widget.closeModal();
+                break;
+        }
+
+        // Close modal if user clicks on the backdrop (outside the inner wrapper)
+        const dialog = target.closest('dialog');
+        if (dialog && e.target === dialog) {
+            widget.closeModal();
         }
     });
 
@@ -82,11 +102,6 @@ export function setupEventListeners(widget: SheetsFacetsWidget, root: ShadowRoot
                 widget.state.searchQuery = searchInput.value;
                 widget.state.currentPage = 1;
                 widget.updateView();
-
-                const resultsGrid = root.querySelector('.container_data') as HTMLElement;
-                if (resultsGrid) {
-                    resultsGrid.focus({ preventScroll: true });
-                }
             }
         });
     }

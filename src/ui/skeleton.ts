@@ -18,6 +18,17 @@ export function injectLayoutSkeleton(root: ShadowRoot): void {
                     <div class="filters"></div>
                     <button type="button" class="btn-clear" data-action="clear_filters">Clear all filters</button>  
                 </section>
+
+                <dialog id="details-modal" aria-labelledby="modal-title-id" aria-modal="true">
+                    <div class="modal-content-wrapper">
+                        <div class="modal-header">
+                            <h2 id="modal-title-id" class="modal-title" tabindex="-1"></h2>
+                            <button type="button" class="btn-close" data-action="close_modal" aria-label="Close dialog">&times;</button>
+                        </div>
+                        <div class="modal-body"></div>
+                    </div>
+                </dialog>                
+                
             </div>
             <div class="main-content">
                 <section id="main-container" aria-labelledby="search-results-heading">

@@ -6,9 +6,10 @@ function escapeRegExp(text: string): string {
 
 function containsAny(itemString: string | undefined, selectedValues: string[]): boolean {
     if (!itemString) return false;
-    // Keep the comma splitting in case a single cell has multiple values (e.g., "Adaptation, Mitigation")
-    const itemValues = itemString.split(',').map(val => val.trim());
-    return selectedValues.some(selected => itemValues.includes(selected));
+    const normalizedItemString = itemString.toLowerCase();
+    return selectedValues.some(selected =>
+        normalizedItemString.includes(selected.toLowerCase())
+    );
 }
 
 export function applyFilters(
@@ -24,33 +25,46 @@ export function applyFilters(
         const regex = new RegExp(escapeRegExp(searchQuery), 'i');
         result = result.filter((item) => {
             const metaValues = item.metaData.map(m => m.value).join(' ');
-            const fullText = `${item.title} ${item.link} ${metaValues}`;
+            const modalValues = item.modalMetaData.map(m => m.value).join(' ');
+            const fullText = `${item.title} ${item.link} ${metaValues} ${modalValues}`;
             return regex.test(fullText);
         });
     }
 
     // 2. Generic Checkbox Filtering
-    for (const [filterLabel, selectedValues] of Object.entries(activeFilters)) {
-        if (selectedValues.length > 0) {
-            
-            // Grab the specific columns this group is allowed to search from our config
-            const targetCols = availableFilters[filterLabel]?.targetColumns || [];
+    for (const [filterGroupLabel, selectedItems] of Object.entries(activeFilters)) {
+        if (selectedItems.length > 0) {
+
+            const targetCols = availableFilters[filterGroupLabel]?.targetColumns || [];
 
             result = result.filter(item => {
-                
-                // ✨ If the HTML specified columns (e.g. cols="1, 3"), ONLY search those columns!
+
+                // If the HTML specified columns (e.g. cols="1, 3"), ONLY search those columns
                 if (targetCols.length > 0) {
-                    return targetCols.some(colIndex => {
-                        const metaDataField = item.metaData.find(m => m.columnIndex === colIndex);
-                        return containsAny(metaDataField?.value, selectedValues);
+                    return selectedItems.some(selected => {
+                        return targetCols.some(colIndex => {
+                            const metaDataField = item.metaData.find(m => m.columnIndex === colIndex)
+                                || item.modalMetaData.find(m => m.columnIndex === colIndex);
+                            return containsAny(metaDataField?.value, [selected.value]);
+                        });
                     });
                 }
-                
-                // Fallback: If no columns were specified in HTML, do exactly what it did before
-                const matchingMeta = item.metaData.find(m => m.label === filterLabel);
-                const itemValue = matchingMeta ? matchingMeta.value : undefined;
-                
-                return containsAny(itemValue, selectedValues);
+
+                // Dynamic Fallback Mapping
+                return selectedItems.some(selected => {
+                    // Try to map the search to the Group Title (e.g., standard "Services Offered" column)
+                    let matchingMeta = item.metaData.find(m => m.label?.toLowerCase() === filterGroupLabel.toLowerCase())
+                        || item.modalMetaData.find(m => m.label?.toLowerCase() === filterGroupLabel.toLowerCase());
+
+                    // If the group column doesn't exist, map it to the Checkbox Label (e.g., "Service In Spanish" column)
+                    if (!matchingMeta) {
+                        matchingMeta = item.metaData.find(m => m.label?.toLowerCase() === selected.label.toLowerCase())
+                            || item.modalMetaData.find(m => m.label?.toLowerCase() === selected.label.toLowerCase());
+                    };
+
+                    const itemValue = matchingMeta ? matchingMeta.value : undefined;
+                    return containsAny(itemValue, [selected.value]);
+                });
             });
         }
     }

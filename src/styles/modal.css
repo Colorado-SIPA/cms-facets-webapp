@@ -1,0 +1,89 @@
+/* ========================================= */
+/* MODAL DIALOG                              */
+/* ========================================= */
+
+#main-page.container {
+    dialog#details-modal {
+        border: none;
+        border-radius: 0.5rem;
+        padding: 0;
+        max-width: 666px;
+        width: 80%;
+        height: 80vh;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+
+        &[open] {
+            animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        &::backdrop {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        &[open]::backdrop {
+            animation: backdropFadeIn 0.3s ease-out forwards;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #dee2e6;
+
+            h2 {
+                margin: 0;
+                font-size: 1.5rem;
+            }
+
+            button.btn-close {
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+
+            ul.properties-list {
+                list-style: none;
+                padding: 0;
+
+                li {
+                    margin-bottom: 1.8rem;
+
+                    a.links {
+                        color: #265da6;
+                    }
+
+                    span {
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes backdropFadeIn {
+    from {
+        background: rgba(0, 0, 0, 0);
+    }
+    to {
+        background: rgba(0, 0, 0, 0.6);
+    }
+}
