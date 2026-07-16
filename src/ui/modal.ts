@@ -20,9 +20,18 @@ export function renderAndOpenModal(item: ParsedItem, root: ShadowRoot): void {
             <ul class="properties-list">
                 ${renderMetaData(item.modalMetaData, item.modalTitle)} 
             </ul>
+            
+            <div>
+                <button type="button" class="modal-button" id="close-details-btn">Close Details</button>
+            </div>
         `;
+        const closeBtn = bodyEl.querySelector('#close-details-btn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                dialog.close();
+            });
+        }
     }
-
     // 3. Open the Modal and Shift Focus
     dialog.showModal();
     if (titleEl) {
