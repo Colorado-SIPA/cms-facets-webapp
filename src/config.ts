@@ -5,6 +5,10 @@ export function initializeConfig(element: HTMLElement): AppConfig {
     const sheetName = element.getAttribute('sheet-name');
     const itemsPerPage = parseInt(element.getAttribute('items-per-page') || '20', 10);
 
+// Read the sort attribute (validate it matches our expected values)
+    const rawSort = element.getAttribute('sort');
+    const sort = (rawSort === 'random' || rawSort === 'alphabetical') ? rawSort : undefined;    
+
     if (!sheetId || !sheetName) {
         throw new Error(`[Climate Facets] Critical Error: Missing 'sheet-id' or 'sheet-name' attributes.`);
     }
@@ -65,6 +69,7 @@ export function initializeConfig(element: HTMLElement): AppConfig {
         sheetId,
         sheetName,
         itemsPerPage,
+        sort,
         availableFilters,
         schema: {
             cardTitleColumn,

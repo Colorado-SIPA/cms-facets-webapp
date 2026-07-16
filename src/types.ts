@@ -24,6 +24,7 @@ export interface AppConfig {
     schema: SchemaConfig;
     sheetId: string;
     sheetName: string;
+    sort?: 'random' | 'alphabetical';
 }
 
 // 2. Raw Data Types

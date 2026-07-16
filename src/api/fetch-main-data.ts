@@ -1,6 +1,4 @@
-// Inside fetch-main-data.ts
-
-import type { AppConfig, ParsedItem, MetaDataValue } from '../types';
+import type { AppConfig, ParsedItem, MetaDataValue, MetaDataDef } from '../types';
 import { parseCSV } from './parse';
 
 export async function fetchMainData(config: AppConfig): Promise<ParsedItem[]> {
@@ -15,33 +13,22 @@ export async function fetchMainData(config: AppConfig): Promise<ParsedItem[]> {
 
         rawData.shift(); // Remove the header row
 
-        const parsedData: ParsedItem[] = rawData.map((row, index) => {
-            const metaData: MetaDataValue[] = [];
-            config.schema.cardMetaData.forEach(def => {
-                metaData.push({
-                    anchorText: def.anchorText,
-                    ariaLabel: def.ariaLabel,
-                    columnIndex: def.columnIndex,
-                    format: def.format,
-                    label: def.label,
-                    linkType: def.linkType,
-                    value: cleanCellData(row[def.columnIndex]) || 'Not available',
-                });
+        if (config.sort === 'random') {
+            for (let i = rawData.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [rawData[i], rawData[j]] = [rawData[j], rawData[i]];
+            }
+        } else if (config.sort === 'alphabetical') {
+            rawData.sort((a, b) => {
+                const valA = a[0] || '';
+                const valB = b[0] || '';
+                return valA.toLowerCase().localeCompare(valB.toLowerCase());
             });
+        }
 
-            // Map the Modal Data
-            const modalMetaData: MetaDataValue[] = [];
-            config.schema.modalMetaData.forEach(def => {
-                modalMetaData.push({
-                    anchorText: def.anchorText,
-                    ariaLabel: def.ariaLabel,
-                    columnIndex: def.columnIndex,
-                    format: def.format,
-                    label: def.label,
-                    linkType: def.linkType,
-                    value: cleanCellData(row[def.columnIndex]) || 'Not available',
-                });
-            });
+        const parsedData: ParsedItem[] = rawData.map((row, index) => {
+            const metaData = mapMetaData(config.schema.cardMetaData, row);
+            const modalMetaData = mapMetaData(config.schema.modalMetaData, row);
 
             // Handle optional links and titles gracefully
             const linkVal = config.schema.cardLinkColumn >= 0 ? (cleanCellData(row[config.schema.cardLinkColumn]) || 'Not available') : null;
@@ -58,12 +45,26 @@ export async function fetchMainData(config: AppConfig): Promise<ParsedItem[]> {
             };
         });
 
-        return sortItemsByTitle(parsedData);
+        // If the user provided a custom sort, return it. Otherwise, use the fallback.
+        return config.sort ? parsedData : sortItemsByTitle(parsedData);
 
     } catch (error) {
         console.error('[Climate Facets] Error fetching main data:', error);
         throw error;
     }
+}
+
+// Helper function to map schema definitions to populated values
+function mapMetaData(schemaDefs: MetaDataDef[], row: string[]): MetaDataValue[] {
+    return schemaDefs.map(def => ({
+        label: def.label,
+        value: cleanCellData(row[def.columnIndex]) || 'Not available',
+        columnIndex: def.columnIndex,
+        linkType: def.linkType,
+        format: def.format,
+        anchorText: def.anchorText,
+        ariaLabel: def.ariaLabel
+    }));
 }
 
 function sortItemsByTitle(items: ParsedItem[]): ParsedItem[] {

@@ -104,12 +104,16 @@ After installing the script, you will need to create the custom HTML element wit
 - **Attributes:**
     - `sheet-id`: (Required) The unique ID found in your Google Sheet's URL.
     - `sheet-name`: (Required) The exact name of the tab in the spreadsheet containing your data
+    - `hidden`: (Optional) Prevents the flash of unstyled content, which is common with custom elements.
+        - ***Note:*** This is a boolean attribute that does not accept a value
     - `items-per-page`: (Optional) The number of results to display before paginating.
         - ***Values accepted:*** Any number that is less than the total number of entries.
         - ***Default value:*** `20`
-    - `hidden`: (Optional) Prevents the flash of unstyled content, which is common with custom elements.
-        - ***Note:*** This is a boolean attribute that does not accept a value
-
+    - `sort`: Allows the spreadsheet rows to be re-sorted before displaying
+        - ***Values accepted:*** 
+            - `random`: Randomizes the sort order of the spreadsheet rows
+            - `alphabetical`: requies that each filter applied be matched for anr entry to be returned (e.g. filter_1 AND filter_2)
+        - ***Default value:*** None. Spreadsheet rows are sorted in the same order they appear in the host document.
 ---
 #### Search Filters Section:
 
@@ -125,9 +129,9 @@ After installing the script, you will need to create the custom HTML element wit
         - ***Default value:*** None - all columns are searched
     - `match`: (Optional) Determines how search results are filtered when multiple checkboxes are selected.
         - ***Values accepted:*** 
-            - `Any` returns entries that have at least one filter matching (e.g. filter_1 OR filter_2)
-            - `All` requires that each filter applied be matched for an entry to be returned (e.g. filter_1 AND filter_2)
-        - ***Default value:*** `Any`
+            - `any`: returns entries that have at least one filter matching (e.g. filter_1 OR filter_2)
+            - `all`: requires that each filter applied be matched for an entry to be returned (e.g. filter_1 AND filter_2)
+        - ***Default value:*** `any`
 
 ##### `<filter-title>`
 - **Description:** Creates the title for the accordion group.

@@ -28,9 +28,24 @@ export function renderAndOpenModal(item: ParsedItem, root: ShadowRoot): void {
     if (titleEl) {
         (titleEl as HTMLElement).focus();
     }
+
+    // 4. Make body inert
+    if (dialog) {
+        document.body.inert = true;
+        document.body.style.height = "100vh";
+        document.body.style.overflow = 'hidden';
+    }
+
+    dialog.onclose = () => {
+        document.body.inert = false;
+        document.body.style.removeProperty('height');
+        document.body.style.removeProperty('overflow');
+    };
 }
 
 export function hideModal(root: ShadowRoot): void {
     const dialog = root.querySelector<HTMLDialogElement>('#details-modal');
-    if (dialog) dialog.close();
+    if (dialog) {
+        dialog.close();
+    }
 }
