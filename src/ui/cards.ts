@@ -21,7 +21,7 @@ export function renderCards(items: ParsedItem[], root: ShadowRoot, config: AppCo
             if (item.link && item.link !== 'Not available') {
 
                 // verify URL is fully formed
-                const https = /^https:\/\//i;
+                const https = /^https?:\/\//i;
                 if (https.test(item.link) === false) {
                     item.link = 'https://' + item.link;
                 }
@@ -133,8 +133,16 @@ export const renderMetaData = (metaData: MetaDataValue[], _title: string): strin
             // web links
             else if (meta.linkType === 'web') {
                 linkText = linkText || meta.value; // Fallback
+                
+                let webUrl = meta.value;
+                const https = /^https?:\/\//i;
+                
+                if (https.test(webUrl) === false) {
+                    webUrl = 'https://' + webUrl;
+                }
+
                 displayValue = html`
-                    <a href="${sanitizeUrl(meta.value)}" target="_blank" class="links" ${ariaLabelAttr}>
+                    <a href="${sanitizeUrl(webUrl)}" target="_blank" class="links" ${ariaLabelAttr}>
                         ${sanitizeHTML(linkText)}
                     </a>
                 `;
