@@ -1,10 +1,12 @@
 // 1. Core Configuration Types
 // --------------------------------------------------------
 export interface MetaDataDef {
+    anchorText?: string;
+    ariaLabel?: string;
     columnIndex: number;
+    format?: string;
     label?: string;
     linkType?: string;
-    format?: string;
 }
 
 export interface SchemaConfig {
@@ -45,11 +47,13 @@ export interface GenericDataItem {
 }
 
 export interface MetaDataValue {
+    anchorText?: string;
+    ariaLabel?: string;
     columnIndex: number;
-    label?: string;
-    value: string;
-    linkType?: string;
     format?: string;
+    label?: string;
+    linkType?: string;
+    value: string;
 }
 
 export interface FilterItemDef {

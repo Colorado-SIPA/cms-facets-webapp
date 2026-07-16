@@ -34,7 +34,6 @@ export function initializeConfig(element: HTMLElement): AppConfig {
             return []
         })();
 
-        // Check for the match attribute (default to 'or' if omitted)
         const matchAttr = group.getAttribute('match');
         const operator = matchAttr && matchAttr.toLowerCase() === 'all' ? 'all' : 'any';
 
@@ -55,36 +54,12 @@ export function initializeConfig(element: HTMLElement): AppConfig {
     const cardTitleColumn = titleEl ? parseInt(titleEl.getAttribute('column') || '-1', 10) : -1;
     const cardLinkColumn = linkEl ? parseInt(linkEl.getAttribute('column') || '-1', 10) : -1;
     const cardActionText = actionEl ? actionEl.textContent?.trim() || 'View Details' : null;
-
-    const cardMetaData: MetaDataDef[] = [];
-    element.querySelectorAll('card-content').forEach(meta => {
-        const colStr = meta.getAttribute('column');
-        if (colStr) {
-            cardMetaData.push({
-                columnIndex: parseInt(colStr, 10),
-                label: meta.getAttribute('label') || undefined,
-                linkType: meta.getAttribute('link-type') || undefined,
-                format: meta.getAttribute('format') || undefined
-            });
-        }
-    });
+    const cardMetaData: MetaDataDef[] = parseMetaDataElements(element, 'card-content');
 
     // 3. Parse Modal Layout from the DOM
     const modalTitleEl = element.querySelector('modal-title');
     const modalTitleColumn = modalTitleEl ? parseInt(modalTitleEl.getAttribute('column') || '-1', 10) : -1;
-
-    const modalMetaData: MetaDataDef[] = [];
-    element.querySelectorAll('modal-content').forEach(meta => {
-        const colStr = meta.getAttribute('column');
-        if (colStr) {
-            modalMetaData.push({
-                columnIndex: parseInt(colStr, 10),
-                label: meta.getAttribute('label') || undefined,
-                linkType: meta.getAttribute('link-type') || undefined,
-                format: meta.getAttribute('format') || undefined
-            });
-        }
-    });
+    const modalMetaData: MetaDataDef[] = parseMetaDataElements(element, 'modal-content');
 
     return {
         sheetId,
@@ -100,4 +75,25 @@ export function initializeConfig(element: HTMLElement): AppConfig {
             modalMetaData
         }
     };
+}
+
+// Helper function to parse metadata for cards and modals
+function parseMetaDataElements(rootElement: HTMLElement, selector: string): MetaDataDef[] {
+    const metaData: MetaDataDef[] = [];
+    
+    rootElement.querySelectorAll(selector).forEach(meta => {
+        const colStr = meta.getAttribute('column');
+        if (colStr) {
+            metaData.push({
+                anchorText: meta.getAttribute('anchor-text') || undefined,
+                ariaLabel: meta.getAttribute('aria-label') || undefined,
+                columnIndex: parseInt(colStr, 10),
+                format: meta.getAttribute('format') || undefined,
+                label: meta.getAttribute('label') || undefined,
+                linkType: meta.getAttribute('link-type') || undefined,
+            });
+        }
+    });
+    
+    return metaData;
 }

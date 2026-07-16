@@ -35,7 +35,7 @@ This app requires a Google Sheet as a backend data source.
 Simply add the script to any webpage:
 
 ```html
-<script type="module" src="[https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.2/dist/js/sheets-facets.js](https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.2/dist/js/sheets-facets.js)" integrity="sha384-12csvaTP8LxEuEwa1BlfkEc/uVdo07HTOCivetSR6f1lDFZ8+/Me4SlDXTk1yOWP" crossorigin="anonymous"></script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.3/dist/js/sheets-facets.js" integrity="sha384-EdQYQfQlV0n1beHI3xYTytvEiOhgyMr99LXx9wngdM/jqeJXjTezS9NX+QG77YAM" crossorigin="anonymous"></script>
 ```
 
 The script can appear before or after the HTML element (`<sheets-facets>`), but the best practice is to put it in the `<head>` or as close as possible.
@@ -61,6 +61,7 @@ After installing the script, you will need to create the custom HTML element wit
     </search-filters>
 
     <search-results>
+
         <!-- Card Layout Configuration -->
         <card-layout>
             <card-link column="1">
@@ -68,10 +69,12 @@ After installing the script, you will need to create the custom HTML element wit
             </card-link>
             <card-body>
                 <card-content column="3" label="Area of Work" format="pills"></card-content>
-                <card-content column="4" label="Website" link-type="web"></card-content>
+                <card-content column="4" label="Website" link-type="web" anchor-text="Visit [[TITLE]] Website"></card-content>
             </card-body>
+
             <!-- Optional: Triggers a modal window -->
             <card-action trigger="modal">View Full Details</card-action>
+
         </card-layout>
 
         <!-- Optional: Modal Layout Configuration -->
@@ -172,19 +175,36 @@ After installing the script, you will need to create the custom HTML element wit
     - `column`: (Required) The zero-indexed column number from the spreadsheet.
         - ***Values accepted:*** Any number that represents a valid column in the Google Sheet.
         - ***Default value:*** None. If this attribute is omitted, the content will not be displayed.
-    - `label`: (Optional) If provided, this text will be displayed as bold text with a colon prior to the displaying of the content.
-        - ***Values accepted:*** Any string
-        - ***Default value:*** None. If this attribute is omitted, the content will be displayed without a label.
-    - `link-type`: (Optional) Transforms the content into an actionable HTML link. 
-        - ***Values accepted:*** 
-            - `web`: Creates a standard HTTP web link. Requires a URL.
-            - `mailto`: Creates an link to send an email. Requires an email address.
-            - `tel`: Creates a link to dial a phone number. Requires a valid USA phone number. Creates default anchor text of "Send a Message to [CARD_TITLE]"
-        - ***Default value:*** None. If this attribute is omitted, the content will be displayed as plain text.
     - `format`: (Optional) Controls the visual formatting of the data.
         - ***Values accepted:*** 
             - `pills`: Parses comma separated data into individual UI chips.
         - ***Default value:*** None. If this attribute is omitted, the content will be displayed as plain text.
+    - `label`: (Optional) If provided, this text will be displayed as bold text with a colon prior to the displaying of the content.
+        - ***Values accepted:*** Any string of characters that does not include the double quote character (`"`).
+        - ***Default value:*** None. If this attribute is omitted, the content will be displayed without a label.
+- **Hyperlink Attributes**:
+    - `link-type`: (Optional) Transforms the content into an actionable HTML link. 
+        - ***Values accepted:*** 
+            - `web`: Creates a standard HTTP web link. Requires a URL.
+            - `mailto`: Creates an link to send an email. Requires an email address.
+            - `tel`: Creates a link to dial a phone number. Requires a valid USA phone number.
+        - ***Default value:*** None. If this attribute is omitted, the content will be displayed as plain text.
+    - `anchor-text` (Optional) The visible anchor text that will be used for the hyperlink.
+        - ***Dependencies:*** Requires the `link-type` attribute to be set to a valid value.
+        - ***Values accepted:*** Any string of characters that does not include the double quote character (`"`).
+        - ***Default value:*** None. If this attribute is omitted, the content from the spreadsheet cell will be displayed.
+        - ***Shortcodes:*** The `anchor-text` attribute accepts two possible shortcode values:
+            - `[[TITLE]]`: Displays the value of the spreadsheet cell referenced by the `card-title` element via the `column` attribute.
+            - `[[COLUMN_VALUE]]`: Displays the contents of the spreadsheet cell referenced by the `card-content` element via the `column` attribute.
+            - NOTE: Shortcodes can be used in conjunction with static text to create more useful anchor text (e.g. `Send an email to [[TITLE]]`)
+    - `aria-label` (Optional) When provided, an `aria-label` attribute will be passed through to the `<a>` element.
+        - ***Dependencies:*** Requires the `link-type` attribute to be set to a valid value.
+        - ***Values accepted:*** Any string of characters that does not include the double quote character (`"`). Note that it is best practice for the `aria-label` to begin with the same text that is visually presented.
+        - ***Default value:*** None. If this attribute is omitted, the `aria-label` attribute will not be added.
+        - ***Shortcodes:*** The `aria-label` attribute accepts two possible shortcode values:
+            - `[[TITLE]]`: Displays the value of the spreadsheet cell referenced by the `card-title` element via the `column` attribute.
+            - `[[COLUMN_VALUE]]`: Displays the contents of the spreadsheet cell referenced by the `card-content` element via the `column` attribute.
+            - NOTE: Shortcodes can be used in conjunction with static text to create more useful anchor text (e.g. `Send an email to [[TITLE]]`)
 
 ##### `<card-action>` (optional)
 - **Description:** Creates a button at the bottom of the card used to interact with the entry.
@@ -226,20 +246,36 @@ The use of a modal is completely optional but highly encouraged when the number 
     - `column`: (Required) The zero-indexed column number from the spreadsheet.
         - ***Values accepted:*** Any number that represents a valid column in the Google Sheet.
         - ***Default value:*** None. If this attribute is omitted, the content will not display.
-    - `label`: (Optional) If provided, this text will be displayed as bold text with a colon prior to the displaying of the content.
-        - ***Values accepted:*** Any string
-        - ***Default value:*** None. If this attribute is omitted, the content will be displayed without a label.
-    - `link-type`: (Optional) Transforms the content into an actionable HTML link.
-        - ***Values accepted:*** 
-            - `web`: Creates a standard HTTP web link. Requires a URL.
-            - `mailto`: Creates an link to send an email. Requires an email address.
-            - `tel`: Creates a link to dial a phone number. Requires a valid USA phone number. Creates default anchor text of "Send a Message to [CARD_TITLE]"
-        - ***Default value:*** None. If this attribute is omitted, the content will be displayed as plain text.
     - `format`: (Optional) Controls the visual formatting of the data.
         - ***Values accepted:*** 
             - `pills`: Parses comma separated data into individual UI chips.
         - ***Default value:*** None. If this attribute is omitted, the content will be displayed as plain text.
-
+    - `label`: (Optional) If provided, this text will be displayed as bold text with a colon prior to the displaying of the content.
+        - ***Values accepted:*** Any string
+        - ***Default value:*** None. If this attribute is omitted, the content will be displayed without a label.
+- **Hyperlink Attributes**:
+    - `link-type`: (Optional) Transforms the content into an actionable HTML link.
+        - ***Values accepted:*** 
+            - `web`: Creates a standard HTTP web link. Requires a URL.
+            - `mailto`: Creates an link to send an email. Requires an email address.
+            - `tel`: Creates a link to dial a phone number. Requires a valid USA phone number.
+        - ***Default value:*** None. If this attribute is omitted, the content will be displayed as plain text.
+    - `anchor-text` (Optional) The visible anchor text that will be used for the hyperlink.
+        - ***Dependencies:*** Requires the `link-type` attribute to be set to a valid value.
+        - ***Values accepted:*** Any string of characters that does not include the double quote character (`"`).
+        - ***Default value:*** None. If this attribute is omitted, the content from the spreadsheet cell will be displayed.
+        - ***Shortcodes:*** The `anchor-text` attribute accepts two possible shortcode values:
+            - `[[TITLE]]`: Displays the value of the spreadsheet cell referenced by the `modal-title` element via the `column` attribute.
+            - `[[COLUMN_VALUE]]`: Displays the contents of the spreadsheet cell referenced by the `modal-content` element via the `column` attribute.
+            - NOTE: Shortcodes can be used in conjunction with static text to create more useful anchor text (e.g. `Send an email to [[TITLE]]`)
+    - `aria-label` (Optional) When provided, an `aria-label` attribute will be passed through to the `<a>` element.
+        - ***Dependencies:*** Requires the `link-type` attribute to be set to a valid value.
+        - ***Values accepted:*** Any string of characters that does not include the double quote character (`"`). Note that it is best practice for the `aria-label` to begin with the same text that is visually presented.
+        - ***Default value:*** None. If this attribute is omitted, the `aria-label` attribute will not be added.
+        - ***Shortcodes:*** The `aria-label` attribute accepts two possible shortcode values:
+            - `[[TITLE]]`: Displays the value of the spreadsheet cell referenced by the `modal-title` element via the `column` attribute. If a `modal-title` is not provided, then the `card-title` will be used as a fallback.
+            - `[[COLUMN_VALUE]]`: Displays the contents of the spreadsheet cell referenced by the `modal-content` element via the `column` attribute.
+            - NOTE: Shortcodes can be used in conjunction with static text to create more useful anchor text (e.g. `Send an email to [[TITLE]]`)
 
 ---
 

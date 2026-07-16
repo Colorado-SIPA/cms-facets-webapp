@@ -1,3 +1,5 @@
+// Inside fetch-main-data.ts
+
 import type { AppConfig, ParsedItem, MetaDataValue } from '../types';
 import { parseCSV } from './parse';
 
@@ -17,11 +19,13 @@ export async function fetchMainData(config: AppConfig): Promise<ParsedItem[]> {
             const metaData: MetaDataValue[] = [];
             config.schema.cardMetaData.forEach(def => {
                 metaData.push({
-                    label: def.label,
-                    value: cleanCellData(row[def.columnIndex]) || 'Not available',
+                    anchorText: def.anchorText,
+                    ariaLabel: def.ariaLabel,
                     columnIndex: def.columnIndex,
+                    format: def.format,
+                    label: def.label,
                     linkType: def.linkType,
-                    format: def.format
+                    value: cleanCellData(row[def.columnIndex]) || 'Not available',
                 });
             });
 
@@ -29,11 +33,13 @@ export async function fetchMainData(config: AppConfig): Promise<ParsedItem[]> {
             const modalMetaData: MetaDataValue[] = [];
             config.schema.modalMetaData.forEach(def => {
                 modalMetaData.push({
-                    label: def.label,
-                    value: cleanCellData(row[def.columnIndex]) || 'Not available',
+                    anchorText: def.anchorText,
+                    ariaLabel: def.ariaLabel,
                     columnIndex: def.columnIndex,
+                    format: def.format,
+                    label: def.label,
                     linkType: def.linkType,
-                    format: def.format
+                    value: cleanCellData(row[def.columnIndex]) || 'Not available',
                 });
             });
 

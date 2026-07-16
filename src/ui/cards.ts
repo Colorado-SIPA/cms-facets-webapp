@@ -59,7 +59,7 @@ export function renderCards(items: ParsedItem[], root: ShadowRoot, config: AppCo
         `}).join('');
 }
 
-const renderMetaData = (metaData: MetaDataValue[], _title: string): string => {
+export const renderMetaData = (metaData: MetaDataValue[], _title: string): string => {
     return metaData.map(meta => {
         let displayValue = sanitizeHTML(meta.value);
 
@@ -70,19 +70,12 @@ const renderMetaData = (metaData: MetaDataValue[], _title: string): string => {
             const seen = new Set<string>();
 
             rawItems.forEach(item => {
-                // 1. Trim whitespace and remove a leading "and "
                 let cleanItem = item.trim().replace(/^and\s+/i, '').trim();
-
                 if (cleanItem.length > 0) {
-                    // 2. Track the lowercase version to prevent duplicates
                     const lowerItem = cleanItem.toLowerCase();
-
                     if (!seen.has(lowerItem)) {
                         seen.add(lowerItem);
-
-                        // Capitalize the first letter of the string for the UI
                         const displayItem = cleanItem.charAt(0).toUpperCase() + cleanItem.slice(1);
-
                         uniqueItems.push(displayItem);
                     }
                 }
@@ -94,29 +87,56 @@ const renderMetaData = (metaData: MetaDataValue[], _title: string): string => {
 
             displayValue = html`<div class="pill-container">${pills}</div>`;
         }
-        // Handle Links
+
+        // handle links
         if (meta.linkType && meta.value !== 'Not available') {
+            
+            // process shortcodes for anchor text
+            let linkText = meta.anchorText 
+                ? meta.anchorText.replace(/\[\[TITLE\]\]/gi, _title).replace(/\[\[COLUMN_VALUE\]\]/gi, meta.value)
+                : '';
+
+            // process shortcodes for aria-label
+            let ariaLabelAttr = '';
+            if (meta.ariaLabel) {
+                const processedAria = meta.ariaLabel
+                    .replace(/\[\[TITLE\]\]/gi, _title)
+                    .replace(/\[\[COLUMN_VALUE\]\]/gi, meta.value);
+                ariaLabelAttr = `aria-label="${sanitizeHTML(processedAria)}"`;
+            }
+
+            // email links
             if (meta.linkType === 'mailto') {
+                linkText = linkText || meta.value; // Fallback
                 displayValue = html`
-                    <a href="mailto:${sanitizeHTML(meta.value)}"  target="_blank" class="links">
-                        Send a Message
-                        <span class="visually-hidden"> to ${_title}</span>
+                    <a href="mailto:${sanitizeHTML(meta.value)}" target="_blank" class="links" ${ariaLabelAttr}>
+                        ${sanitizeHTML(linkText)}
+                        ${!meta.anchorText && !meta.ariaLabel ? html`<span class="visually-hidden"> to ${_title}</span>` : ''}
                     </a>
                 `;
-            } else if (meta.linkType === 'tel') {
+            } 
+            
+            // phone links
+            else if (meta.linkType === 'tel') {
+                linkText = linkText || meta.value; // Fallback
                 displayValue = html`
-                    <a href="tel:${sanitizeHTML(meta.value)}" target="_blank" class="links">
-                        ${sanitizeHTML(meta.value)}
+                    <a href="tel:${sanitizeHTML(meta.value)}" target="_blank" class="links" ${ariaLabelAttr}>
+                        ${sanitizeHTML(linkText)}
                     </a>
                 `;
-            } else if (meta.linkType === 'web') {
+            } 
+            
+            // web links
+            else if (meta.linkType === 'web') {
+                linkText = linkText || meta.value; // Fallback
                 displayValue = html`
-                    <a href="${sanitizeUrl(meta.value)}" target="_blank" target="_blank" class="links">${sanitizeHTML(meta.value)}</a>
+                    <a href="${sanitizeUrl(meta.value)}" target="_blank" class="links" ${ariaLabelAttr}>
+                        ${sanitizeHTML(linkText)}
+                    </a>
                 `;
             }
         }
 
-        // Add a specific class to the list item if it contains pills for styling flexibility
         const liClass = meta.format === 'pills' ? 'class="has-pills"' : '';
 
         if (meta.label) {
