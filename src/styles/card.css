@@ -35,13 +35,19 @@
                     margin-bottom: 2rem;
                     padding-left: 0;
 
-                    li {
+                    li.property {
                         margin: 0.5rem 0;
 
                         a.links {
                             color: #265da6;
                         }
-                        
+
+                        .label {
+                            font-weight: bold;
+                        }
+                    }
+
+                    li.has-pills {
                         .label {
                             font-weight: bold;
                         }

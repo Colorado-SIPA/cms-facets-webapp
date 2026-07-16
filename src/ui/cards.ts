@@ -82,10 +82,14 @@ export const renderMetaData = (metaData: MetaDataValue[], _title: string): strin
             });
 
             const pills = uniqueItems
-                .map(item => html`<span class="pill">${sanitizeHTML(item)}</span>`)
+                .map(item => html`
+                        <li class="pill">${sanitizeHTML(item)}</li>
+                    `)
                 .join('');
 
-            displayValue = html`<div class="pill-container">${pills}</div>`;
+            displayValue = html`
+                <ul class="pill-container">${pills}</ul>
+            `;
         }
 
         // handle links
@@ -137,7 +141,7 @@ export const renderMetaData = (metaData: MetaDataValue[], _title: string): strin
             }
         }
 
-        const liClass = meta.format === 'pills' ? 'class="has-pills"' : '';
+        const liClass = meta.format === 'pills' ? 'class="has-pills"' : 'class="property"';
 
         if (meta.label) {
             return html`
