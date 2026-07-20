@@ -9,17 +9,15 @@
         <sheets-facets sheet-id="1AukfTSBie7B8ArTKY07dQEjCZ-_9JphY--qXMCxcEH8" sheet-name="English" items-per-page="21" hidden>
             <!-- define the search filters -->
             <search-filters>
-                <filter-group match="all">
+                <filter-group match="any">
                     <filter-title>Services Offered</filter-title>
-                    <filter-item>Air Conditioning</filter-item>
-                    <filter-item>Air Sealing</filter-item>
                     <filter-item>Appliance Installation</filter-item>
                     <filter-item>Electrical</filter-item>
                     <filter-item>General Contracting</filter-item>
-                    <filter-item>Insulation</filter-item>
+                    <filter-item>Heating, ventilation, air conditioning (HVAC)</filter-item>
                     <filter-item>Other</filter-item>
                     <filter-item>Plumbing</filter-item>
-                    <filter-item>Ventilation</filter-item>
+                    <filter-item>Ventilation, air sealing, and insulation</filter-item>
                     <filter-item>Whole Home Assessments</filter-item>
                 </filter-group>
                 <filter-group match="all">
@@ -103,10 +101,10 @@
                         <card-title column="0"></card-title>
                     </card-link>
                     <card-body>
-                        <card-content column="1" label="Email" link-type="mailto" anchor-text="Send a message" aria-label="Send a message to [[TITLE]]"></card-content>
+                        <card-content column="1" label="Email" link-type="mailto"></card-content>
                         <card-content column="2" label="Phone" link-type="tel"></card-content>
                         <card-content column="4" label="Service in Spanish"></card-content>
-                        <card-content column="8" label="Services Offered" format="pills"></card-content>
+                        <card-content column="8" label="Services Offered" format="list"></card-content>
                     </card-body>
                     <card-action trigger="modal">View Full Details</card-action>
                 </card-layout>
@@ -118,9 +116,9 @@
                     <modal-title column="0"></modal-title>
                 </modal-header>
                 <modal-body>
-                    <modal-content column="1" label="Email" link-type="mailto" anchor-text="Send a message" aria-label="Send a message to [[TITLE]]"></modal-content>
+                    <modal-content column="1" label="Email" link-type="mailto"></modal-content>
                     <modal-content column="2" label="Phone" link-type="tel"></modal-content>
-                    <modal-content column="3" label="Web" link-type="web" anchor-text="Website Link" aria-label="Website link for [[TITLE]]"></modal-content>
+                    <modal-content column="3" label="Web" link-type="web" anchor-text="[[TITLE]] Website Link"></modal-content>
                     <modal-content column="4" label="Service in Spanish"></modal-content>
                     <modal-content column="5" label="Serves Region 2"></modal-content>
                     <modal-content column="6" label="Counties Served" format="pills"></modal-content>

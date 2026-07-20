@@ -63,14 +63,17 @@ export const renderMetaData = (metaData: MetaDataValue[], _title: string): strin
     return metaData.map(meta => {
         let displayValue = sanitizeHTML(meta.value);
 
-        // Format Pills
-        if (meta.format === 'pills' && meta.value !== 'Not available') {
-            const rawItems = meta.value.split(',');
+        // Format Pills and Lists
+        if ((meta.format === 'pills' || meta.format === 'list') && meta.value !== 'Not available') {
+
+            // Split by comma ONLY if followed by an even number of quotes
+            const rawItems = meta.value.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
             const uniqueItems: string[] = [];
             const seen = new Set<string>();
 
             rawItems.forEach(item => {
-                let cleanItem = item.trim().replace(/^and\s+/i, '').trim();
+                let cleanItem = item.trim().replace(/^"+|"+$/g, '').trim();
+
                 if (cleanItem.length > 0) {
                     const lowerItem = cleanItem.toLowerCase();
                     if (!seen.has(lowerItem)) {
@@ -81,22 +84,25 @@ export const renderMetaData = (metaData: MetaDataValue[], _title: string): strin
                 }
             });
 
-            const pills = uniqueItems
-                .map(item => html`
-                        <li class="pill">${sanitizeHTML(item)}</li>
-                    `)
-                .join('');
 
-            displayValue = html`
-                <ul class="pill-container">${pills}</ul>
-            `;
+
+            if (meta.format === 'pills') {
+                const pills = uniqueItems
+                    .map(item => html`<li class="pill">${sanitizeHTML(item)}</li>`)
+                    .join('');
+                displayValue = html`<ul class="pill-container">${pills}</ul>`;
+            } else if (meta.format === 'list') {
+                const listItems = uniqueItems
+                    .map(item => html`<li>${sanitizeHTML(item)}</li>`)
+                    .join('');
+                displayValue = html`<ul class="bullet-list">${listItems}</ul>`;
+            }
         }
-
         // handle links
         if (meta.linkType && meta.value !== 'Not available') {
-            
+
             // process shortcodes for anchor text
-            let linkText = meta.anchorText 
+            let linkText = meta.anchorText
                 ? meta.anchorText.replace(/\[\[TITLE\]\]/gi, _title).replace(/\[\[COLUMN_VALUE\]\]/gi, meta.value)
                 : '';
 
@@ -118,8 +124,8 @@ export const renderMetaData = (metaData: MetaDataValue[], _title: string): strin
                         ${!meta.anchorText && !meta.ariaLabel ? html`<span class="visually-hidden"> to ${_title}</span>` : ''}
                     </a>
                 `;
-            } 
-            
+            }
+
             // phone links
             else if (meta.linkType === 'tel') {
                 linkText = linkText || meta.value; // Fallback
@@ -128,15 +134,15 @@ export const renderMetaData = (metaData: MetaDataValue[], _title: string): strin
                         ${sanitizeHTML(linkText)}
                     </a>
                 `;
-            } 
-            
+            }
+
             // web links
             else if (meta.linkType === 'web') {
                 linkText = linkText || meta.value; // Fallback
-                
+
                 let webUrl = meta.value;
                 const https = /^https?:\/\//i;
-                
+
                 if (https.test(webUrl) === false) {
                     webUrl = 'https://' + webUrl;
                 }

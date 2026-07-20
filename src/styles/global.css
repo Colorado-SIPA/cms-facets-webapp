@@ -1,5 +1,5 @@
 /* ========================================= */
-/* GLOBAL UTILITIES & DEV ENVIRONMENT        */
+/* GLOBAL LAYOUT                             */
 /* ========================================= */
 
 #main-page.container {
@@ -53,13 +53,17 @@
         text-align: center;
     }
 
+    /* ========================================= */
+    /* PILLS                                     */
+    /* ========================================= */
+
     .pill-container {
         display: inline-flex;
         flex-wrap: wrap;
         gap: 0.5rem;
         list-style: none;
-        margin: 0.5rem 0 0 0; 
-        padding: 0; 
+        margin: 0.5rem 0 0 0;
+        padding: 0;
     }
 
     li.has-pills {
@@ -78,5 +82,41 @@
         line-height: 1.2;
         padding: 0.25rem 0.75rem;
         margin: 0;
+    }
+
+    /* ========================================= */
+    /* LOADING SPINNER                           */
+    /* ========================================= */
+
+    .loader-container {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 200px;
+        width: 100%;
+    }
+
+    .spinner {
+        animation: spin 1s linear infinite;
+        border-radius: 50%;
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-left-color: #001970; 
+        height: 40px;
+        width: 40px;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Utility to hide elements cleanly */
+    .hidden {
+        display: none !important;
     }
 }

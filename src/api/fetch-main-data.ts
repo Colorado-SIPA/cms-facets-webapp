@@ -73,5 +73,5 @@ function sortItemsByTitle(items: ParsedItem[]): ParsedItem[] {
 
 function cleanCellData(val: string | undefined): string {
     if (!val) return 'Not available';
-    return val.replace(/"/g, '');
+    return val;
 }

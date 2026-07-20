@@ -52,6 +52,11 @@
                             font-weight: bold;
                         }
                     }
+
+                    ul.bullet-list {
+                        margin-top: 0.7rem;
+                        line-height: 1.2;
+                    }
                 }
             }
 

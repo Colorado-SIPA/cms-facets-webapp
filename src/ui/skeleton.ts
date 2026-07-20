@@ -52,9 +52,18 @@ export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean): voi
             <div class="main-content">
                 <section id="main-container" aria-labelledby="search-results-heading">
                     <h2 id="search-results-heading">Search Results</h2>
-                    <div id="pagination-summary" role="status"></div>
-                    <ul class="container_data facets-grid" aria-label="Search results. Links open in a new tab."></ul>
-                    <div class="pagination-container"></div>
+                    
+                    <div id="loading-indicator" class="loader-container">
+                        <div class="spinner"></div>
+                        <p style="margin-top: 1rem; color: #6c757d;">Loading data...</p>
+                    </div>
+
+                    <div id="data-wrapper" class="hidden">
+                        <div id="pagination-summary" role="status"></div>
+                        <ul class="container_data facets-grid" aria-label="Search results. Links open in a new tab."></ul>
+                        <div class="pagination-container"></div>
+                    </div>
+                    
                 </section>
             </div>
         </div>

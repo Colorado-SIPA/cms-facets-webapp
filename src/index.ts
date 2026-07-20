@@ -62,12 +62,20 @@ export class SheetsFacetsWidget extends HTMLElement {
             const hasFilters = Object.keys(this.state.availableFilters).length > 0;
             injectLayoutSkeleton(this.root as ShadowRoot, hasFilters);
 
+            if (this.hidden) this.hidden = false;
             const mainData = await fetchMainData(this.state.config);
 
             this.state.rawData = mainData;
             this.state.filteredData = mainData;
             this.state.totalPages = Math.ceil(mainData.length / this.state.config.itemsPerPage);
             this.state.isLoading = false;
+
+            // hide loader
+            const loader = this.root.querySelector('#loading-indicator');
+            const dataWrapper = this.root.querySelector('#data-wrapper');
+
+            if (loader) loader.classList.add('hidden');
+            if (dataWrapper) dataWrapper.classList.remove('hidden');
 
             renderFilters(this.state.availableFilters, this.state.activeFilters, this.root as ShadowRoot);
             this.updateView();
