@@ -11,7 +11,7 @@ See the [live demo](https://components.sf-prod-uat.colorado.gov/google-sheets-fa
 - **Google Sheets as a CMS:** Uses a publicly viewable Google Sheet as a data source for the UI cards.
 - **Declarative HTML Configuration:** Define your filter taxonomies and card layouts directly in your HTML markup.
 - **Shadow DOM Encapsulation:** 100% protected CSS. The parent website's styles cannot break the app.
-- **Optimized & Minified:** The entire app is 28kB (7.8 kB gzipped) of highly optimized JavaScript / CSS in one production ready bundle.
+- **Optimized & Minified:** The entire app is 31KB (8.6 kB gzipped) of highly optimized JavaScript / CSS in one production ready bundle.
 
 ## ⚡ Quick Start
 

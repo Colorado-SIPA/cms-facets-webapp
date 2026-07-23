@@ -60,7 +60,7 @@
                 padding: 0;
 
                 li.property {
-                    margin-bottom: 1.8rem;
+                    margin-bottom: 1.4rem;
 
                     a.links {
                         color: #265da6;
@@ -72,7 +72,7 @@
                 }
 
                 li.has-pills {
-                    margin-bottom: 1.8rem;
+                    margin-bottom: 1.4rem;
 
                     .label {
                         font-weight: bold;

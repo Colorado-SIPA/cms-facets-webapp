@@ -9,10 +9,10 @@ export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean): voi
             <!-- Mobile Hamburger Toggle -->
             <button type="button" class="mobile-filter-toggle btn-primary w-100" aria-expanded="false" aria-controls="filter-sidebar-content" data-action="toggle_accordion">
                 <span class="accordion-title">Filter Results</span>
-                <span class="accordion-icon" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
-                        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-                    </svg>
+                <span class="accordion-icon animated-hamburger" aria-hidden="true">
+                    <span class="line top"></span>
+                    <span class="line mid"></span>
+                    <span class="line bot"></span>
                 </span>
             </button>
 
@@ -53,11 +53,13 @@ export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean): voi
                 <section id="main-container" aria-labelledby="search-results-heading">
                     <h2 id="search-results-heading">Search Results</h2>
                     
+                    <!-- The Spinner -->
                     <div id="loading-indicator" class="loader-container">
                         <div class="spinner"></div>
                         <p style="margin-top: 1rem; color: #6c757d;">Loading data...</p>
                     </div>
 
+                    <!-- The Data Wrapper (Hidden by default) -->
                     <div id="data-wrapper" class="hidden">
                         <div id="pagination-summary" role="status"></div>
                         <ul class="container_data facets-grid" aria-label="Search results. Links open in a new tab."></ul>
