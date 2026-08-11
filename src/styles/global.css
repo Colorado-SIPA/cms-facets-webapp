@@ -2,6 +2,11 @@
 /* GLOBAL LAYOUT                             */
 /* ========================================= */
 
+:host {
+    display: block;
+    width: 100%;
+}
+
 #main-page.container {
     display: grid;
     font-family: "Trebuchet MS", Roboto, Helvetica, Arial, sans-serif;
