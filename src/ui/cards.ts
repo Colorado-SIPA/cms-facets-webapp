@@ -29,7 +29,7 @@ export function renderCards(items: ParsedItem[], root: ShadowRoot, config: AppCo
                 }
 
                 return html`
-                    <a href="${sanitizeUrl(item.link)}" target="_blank" class="links">${sanitizeHTML(item.title)}</a>
+                    <a href="${sanitizeUrl(item.link)}" class="links" target="_blank" rel="noopener noreferrer">${sanitizeHTML(item.title)}</a>
                 `;
             }
             else return `${sanitizeHTML(item.title)}`;
@@ -39,7 +39,7 @@ export function renderCards(items: ParsedItem[], root: ShadowRoot, config: AppCo
         const actionHtml = (() => {
             if (config.schema.cardActionText) {
                 return html`
-                    <button type="button" class="modal-button" data-action="open_modal" data-id="${item.id}">
+                    <button type="button" class="modal-button" data-action="open_modal" data-id="${item.id}" aria-haspopup="dialog">
                         ${sanitizeHTML(config.schema.cardActionText)} <span class="visually-hidden">${t(config.lang, 'about')} ${sanitizeHTML(item.title)}</span>
                    </button>`;
             }
@@ -121,7 +121,7 @@ export const renderMetaData = (metaData: MetaDataValue[], _title: string, lang: 
             if (meta.linkType === 'mailto') {
                 linkText = linkText || meta.value; // Fallback
                 displayValue = html`
-                    <a href="mailto:${sanitizeHTML(meta.value)}" target="_blank" class="links" ${ariaLabelAttr}>
+                    <a href="mailto:${sanitizeHTML(meta.value)}" class="links" target="_blank" rel="noopener noreferrer" ${ariaLabelAttr}>
                         ${sanitizeHTML(linkText)}
                     </a>
                 `;
@@ -131,7 +131,7 @@ export const renderMetaData = (metaData: MetaDataValue[], _title: string, lang: 
             else if (meta.linkType === 'tel') {
                 linkText = linkText || meta.value; // Fallback
                 displayValue = html`
-                    <a href="tel:${sanitizeHTML(meta.value)}" target="_blank" class="links" ${ariaLabelAttr}>
+                    <a href="tel:${sanitizeHTML(meta.value)}" class="links" target="_blank" rel="noopener noreferrer" ${ariaLabelAttr}>
                         ${sanitizeHTML(linkText)}
                     </a>
                 `;
@@ -149,7 +149,7 @@ export const renderMetaData = (metaData: MetaDataValue[], _title: string, lang: 
                 }
 
                 displayValue = html`
-                    <a href="${sanitizeUrl(webUrl)}" target="_blank" class="links" ${ariaLabelAttr}>
+                    <a href="${sanitizeUrl(webUrl)}" class="links" target="_blank" rel="noopener noreferrer" ${ariaLabelAttr}>
                         ${sanitizeHTML(linkText)}
                     </a>
                 `;

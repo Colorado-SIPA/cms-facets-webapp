@@ -6,7 +6,7 @@ export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean, lang
 
     // Conditionally generate the sidebar if filters exist
     const sidebarHtml = hasFilters ? html`
-        <div class="sidebar">
+        <aside class="sidebar">
             <!-- Mobile Hamburger Toggle -->
             <button type="button" class="mobile-filter-toggle w-100" aria-expanded="false" aria-controls="filter-sidebar-content" data-action="toggle_accordion">
                 <span class="accordion-title">${t(lang, 'filterResults')}</span>
@@ -21,18 +21,18 @@ export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean, lang
             <div id="filter-sidebar-content" class="filter-sidebar-content" hidden>
                 <section class="search-filters" aria-labelledby="search-filters-heading">
                     <h2 id="search-filters-heading">${t(lang, 'searchFilters')}</h2>
-                    <div>
+                    <search>
                         <label for="search_text" class="visually-hidden">${t(lang, 'filterResults')}</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" name="search_text" id="search_text" placeholder="${t(lang, 'searchPlaceholder')}" autocomplete="off"/>
+                            <input type="search" class="form-control" name="search_text" id="search_text" placeholder="${t(lang, 'searchPlaceholder')}" autocomplete="off"/>
                             <button class="btn-primary" type="button" data-action="submit_search">${t(lang, 'searchButton')}</button>                          
                         </div>
-                    </div>
+                    </search>
                     <div class="filters"></div>
                     <button type="button" class="btn-clear" data-action="clear_filters">${t(lang, 'clearFilters')}</button>  
                 </section>
             </div>
-        </div>
+        </aside>
     ` : '';
 
     tempWrapper.innerHTML = html`
@@ -64,7 +64,7 @@ export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean, lang
                     <div id="data-wrapper" class="hidden">
                         <div id="pagination-summary" role="status"></div>
                         <ul class="container_data facets-grid" aria-label="${t(lang, 'resultsAriaLabel')}"></ul>
-                        <div class="pagination-container"></div>
+                        <nav class="pagination-container" aria-label="${t(lang, 'paginationAria')}"></nav>
                     </div>
                     
                 </section>

@@ -41,13 +41,11 @@ export function renderAndOpenModal(item: ParsedItem, root: ShadowRoot, lang: Lan
 
     // 4. Make body inert
     if (dialog) {
-        document.body.inert = true;
         document.body.style.height = "100vh";
         document.body.style.overflow = 'hidden';
     }
 
     dialog.onclose = () => {
-        document.body.inert = false;
         document.body.style.removeProperty('height');
         document.body.style.removeProperty('overflow');
     };

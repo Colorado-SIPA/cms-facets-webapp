@@ -49,11 +49,14 @@ const createFilterGroup = (
     }).join('');
 
     const ariaLabel = t(lang, 'filterGroupAria', { title: sanitizeHTML(title) });
+    const titleId = `filter-title-${instanceId}-${filterId}`;
+    const descId = `filter-desc-${instanceId}-${filterId}`;
 
     return html`
-        <div class="filter-group-block">
-            <h3 class="filter-group-title">${sanitizeHTML(title)}</h3>
-            <ul aria-label="${ariaLabel}">
+        <div class="filter-group-block" role="group" aria-labelledby="${titleId}" aria-describedby="${descId}">
+            <h3 id="${titleId}" class="filter-group-title">${sanitizeHTML(title)}</h3>
+            <span id="${descId}" class="visually-hidden">${ariaLabel}</span>
+            <ul>
                 ${listItems}
             </ul>
         </div>
