@@ -1,9 +1,12 @@
 import type { AppConfig, MetaDataDef, FilterGroupDef } from './types';
+import { isLanguage } from './i18n';
 
 export function initializeConfig(element: HTMLElement): AppConfig {
     const sheetId = element.getAttribute('sheet-id');
     const sheetName = element.getAttribute('sheet-name');
     const itemsPerPage = parseInt(element.getAttribute('items-per-page') || '20', 10);
+    const rawLang = element.getAttribute('lang') || 'en';
+    const lang = isLanguage(rawLang) ? rawLang : 'en';
 
 // Read the sort attribute (validate it matches our expected values)
     const rawSort = element.getAttribute('sort');
@@ -69,6 +72,7 @@ export function initializeConfig(element: HTMLElement): AppConfig {
         sheetId,
         sheetName,
         itemsPerPage,
+        lang,
         sort,
         availableFilters,
         schema: {

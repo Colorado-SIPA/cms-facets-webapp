@@ -1,3 +1,5 @@
+import type { Language } from './i18n';
+
 // 1. Core Configuration Types
 // --------------------------------------------------------
 export interface MetaDataDef {
@@ -21,6 +23,7 @@ export interface SchemaConfig {
 export interface AppConfig {
     availableFilters: FilterOptions;
     itemsPerPage: number;
+    lang: Language;
     schema: SchemaConfig;
     sheetId: string;
     sheetName: string;

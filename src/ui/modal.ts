@@ -1,8 +1,9 @@
 import { html } from '../utils/html';
 import { renderMetaData } from './cards';
 import type { ParsedItem } from '../types';
+import { t, type Language } from '../i18n';
 
-export function renderAndOpenModal(item: ParsedItem, root: ShadowRoot): void {
+export function renderAndOpenModal(item: ParsedItem, root: ShadowRoot, lang: Language): void {
     const dialog = root.querySelector<HTMLDialogElement>('#details-modal');
     if (!dialog) return;
 
@@ -18,11 +19,11 @@ export function renderAndOpenModal(item: ParsedItem, root: ShadowRoot): void {
     if (bodyEl) {
         bodyEl.innerHTML = html`
             <ul class="properties-list">
-                ${renderMetaData(item.modalMetaData, item.modalTitle)} 
+                ${renderMetaData(item.modalMetaData, item.modalTitle, lang)}
             </ul>
             
             <div>
-                <button type="button" class="modal-button" id="close-details-btn">Close Details</button>
+                <button type="button" class="modal-button" id="close-details-btn">${t(lang, 'closeDetails')}</button>
             </div>
         `;
         const closeBtn = bodyEl.querySelector('#close-details-btn');

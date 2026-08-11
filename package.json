@@ -1,6 +1,6 @@
 {
   "name": "cms-facets-webapp",
-  "version": "0.0.0",
+  "version": "1.0.7",
   "type": "module",
   "license": "MIT",
   "repository": {
@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "postbuild": "node scripts/update-readme.js",
     "preview": "vite preview"
   },
   "devDependencies": {

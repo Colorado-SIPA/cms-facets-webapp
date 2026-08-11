@@ -1,6 +1,8 @@
 import { html } from '../utils/html';
 import { sanitizeHTML } from '../utils/sanitize-html';
 import { sanitizeUrl } from '../utils/sanitize-url';
+import { t, type Language } from '../i18n';
+
 import type { ParsedItem, MetaDataValue, AppConfig } from '../types';
 
 export function renderCards(items: ParsedItem[], root: ShadowRoot, config: AppConfig): void {
@@ -9,7 +11,7 @@ export function renderCards(items: ParsedItem[], root: ShadowRoot, config: AppCo
 
     if (items.length === 0) {
         container.innerHTML = html`
-            <li class="text-center w-100 card"><h3>Nothing Found</h3></li>
+            <li class="text-center w-100 card"><h3>${t(config.lang, 'noResults')}</h3></li>
         `;
         return;
     }
@@ -18,7 +20,7 @@ export function renderCards(items: ParsedItem[], root: ShadowRoot, config: AppCo
 
         // 1. Conditionally render the title as plain text or a link
         const titleHtml = (() => {
-            if (item.link && item.link !== 'Not available') {
+            if (item.link && item.link !== '') {
 
                 // verify URL is fully formed
                 const https = /^https?:\/\//i;
@@ -38,7 +40,7 @@ export function renderCards(items: ParsedItem[], root: ShadowRoot, config: AppCo
             if (config.schema.cardActionText) {
                 return html`
                     <button type="button" class="modal-button" data-action="open_modal" data-id="${item.id}">
-                        ${sanitizeHTML(config.schema.cardActionText)} <span class="visually-hidden">about ${sanitizeHTML(item.title)}</span>
+                        ${sanitizeHTML(config.schema.cardActionText)} <span class="visually-hidden">${t(config.lang, 'about')} ${sanitizeHTML(item.title)}</span>
                    </button>`;
             }
             else return '';
@@ -50,7 +52,7 @@ export function renderCards(items: ParsedItem[], root: ShadowRoot, config: AppCo
                     <h3 class="card-title">${titleHtml}</h3>
                     <div class="card-properties">
                         <ul class="properties-list">
-                            ${renderMetaData(item.metaData, item.title)}
+                            ${renderMetaData(item.metaData, item.title, config.lang)}
                         </ul>
                     </div>
                     ${actionHtml}
@@ -59,12 +61,12 @@ export function renderCards(items: ParsedItem[], root: ShadowRoot, config: AppCo
         `}).join('');
 }
 
-export const renderMetaData = (metaData: MetaDataValue[], _title: string): string => {
+export const renderMetaData = (metaData: MetaDataValue[], _title: string, lang: Language): string => {
     return metaData.map(meta => {
-        let displayValue = sanitizeHTML(meta.value);
+        let displayValue = meta.value === '' ? t(lang, 'notAvailable') : sanitizeHTML(meta.value);
 
         // Format Pills and Lists
-        if ((meta.format === 'pills' || meta.format === 'list') && meta.value !== 'Not available') {
+        if ((meta.format === 'pills' || meta.format === 'list') && meta.value !== '') {
 
             // Split by comma ONLY if followed by an even number of quotes
             const rawItems = meta.value.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
@@ -99,7 +101,7 @@ export const renderMetaData = (metaData: MetaDataValue[], _title: string): strin
             }
         }
         // handle links
-        if (meta.linkType && meta.value !== 'Not available') {
+        if (meta.linkType && meta.value !== '') {
 
             // process shortcodes for anchor text
             let linkText = meta.anchorText
@@ -121,7 +123,6 @@ export const renderMetaData = (metaData: MetaDataValue[], _title: string): strin
                 displayValue = html`
                     <a href="mailto:${sanitizeHTML(meta.value)}" target="_blank" class="links" ${ariaLabelAttr}>
                         ${sanitizeHTML(linkText)}
-                        ${!meta.anchorText && !meta.ariaLabel ? html`<span class="visually-hidden"> to ${_title}</span>` : ''}
                     </a>
                 `;
             }

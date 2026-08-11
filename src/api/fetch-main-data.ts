@@ -31,9 +31,9 @@ export async function fetchMainData(config: AppConfig): Promise<ParsedItem[]> {
             const modalMetaData = mapMetaData(config.schema.modalMetaData, row);
 
             // Handle optional links and titles gracefully
-            const linkVal = config.schema.cardLinkColumn >= 0 ? (cleanCellData(row[config.schema.cardLinkColumn]) || 'Not available') : null;
-            const titleVal = config.schema.cardTitleColumn >= 0 ? (cleanCellData(row[config.schema.cardTitleColumn]) || 'Not available') : 'Not available';
-            const modalTitleVal = config.schema.modalTitleColumn >= 0 ? (cleanCellData(row[config.schema.modalTitleColumn]) || 'Not available') : titleVal;
+            const linkVal = config.schema.cardLinkColumn >= 0 ? (cleanCellData(row[config.schema.cardLinkColumn]) || null) : null;
+            const titleVal = config.schema.cardTitleColumn >= 0 ? (cleanCellData(row[config.schema.cardTitleColumn]) || '') : '';
+            const modalTitleVal = config.schema.modalTitleColumn >= 0 ? (cleanCellData(row[config.schema.modalTitleColumn]) || titleVal) : titleVal;
 
             return {
                 id: `item-${index}`,
@@ -58,7 +58,7 @@ export async function fetchMainData(config: AppConfig): Promise<ParsedItem[]> {
 function mapMetaData(schemaDefs: MetaDataDef[], row: string[]): MetaDataValue[] {
     return schemaDefs.map(def => ({
         label: def.label,
-        value: cleanCellData(row[def.columnIndex]) || 'Not available',
+        value: cleanCellData(row[def.columnIndex]),
         columnIndex: def.columnIndex,
         linkType: def.linkType,
         format: def.format,
@@ -72,6 +72,6 @@ function sortItemsByTitle(items: ParsedItem[]): ParsedItem[] {
 }
 
 function cleanCellData(val: string | undefined): string {
-    if (!val) return 'Not available';
+    if (!val) return '';
     return val;
 }

@@ -1,14 +1,15 @@
 import { html } from "../utils/html";
+import { t, type Language } from "../i18n";
 
-export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean): void {
+export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean, lang: Language): void {
     const tempWrapper = document.createElement('div');
 
     // Conditionally generate the sidebar if filters exist
     const sidebarHtml = hasFilters ? html`
         <div class="sidebar">
             <!-- Mobile Hamburger Toggle -->
-            <button type="button" class="mobile-filter-toggle btn-primary w-100" aria-expanded="false" aria-controls="filter-sidebar-content" data-action="toggle_accordion">
-                <span class="accordion-title">Filter Results</span>
+            <button type="button" class="mobile-filter-toggle w-100" aria-expanded="false" aria-controls="filter-sidebar-content" data-action="toggle_accordion">
+                <span class="accordion-title">${t(lang, 'filterResults')}</span>
                 <span class="accordion-icon animated-hamburger" aria-hidden="true">
                     <span class="line top"></span>
                     <span class="line mid"></span>
@@ -19,16 +20,16 @@ export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean): voi
             <!-- Collapsible Content Area -->
             <div id="filter-sidebar-content" class="filter-sidebar-content" hidden>
                 <section class="search-filters" aria-labelledby="search-filters-heading">
-                    <h2 id="search-filters-heading">Search Filters</h2>
+                    <h2 id="search-filters-heading">${t(lang, 'searchFilters')}</h2>
                     <div>
-                        <label for="search_text" class="visually-hidden">Filter Search Results</label>
+                        <label for="search_text" class="visually-hidden">${t(lang, 'filterResults')}</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" name="search_text" id="search_text" placeholder="Search..." autocomplete="off"/>
-                            <button class="btn-primary" type="button" data-action="submit_search">Search</button>                          
+                            <input type="text" class="form-control" name="search_text" id="search_text" placeholder="${t(lang, 'searchPlaceholder')}" autocomplete="off"/>
+                            <button class="btn-primary" type="button" data-action="submit_search">${t(lang, 'searchButton')}</button>                          
                         </div>
                     </div>
                     <div class="filters"></div>
-                    <button type="button" class="btn-clear" data-action="clear_filters">Clear all filters</button>  
+                    <button type="button" class="btn-clear" data-action="clear_filters">${t(lang, 'clearFilters')}</button>  
                 </section>
             </div>
         </div>
@@ -43,7 +44,7 @@ export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean): voi
                 <div class="modal-content-wrapper">
                     <div class="modal-header">
                         <h2 id="modal-title-id" class="modal-title" tabindex="-1"></h2>
-                        <button type="button" class="btn-close" data-action="close_modal" aria-label="Close dialog">&times;</button>
+                        <button type="button" class="btn-close" data-action="close_modal" aria-label="${t(lang, 'close')}">&times;</button>
                     </div>
                     <div class="modal-body"></div>
                 </div>
@@ -51,18 +52,18 @@ export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean): voi
             
             <div class="main-content">
                 <section id="main-container" aria-labelledby="search-results-heading">
-                    <h2 id="search-results-heading">Search Results</h2>
+                    <h2 id="search-results-heading">${t(lang, 'searchResultsTitle')}</h2>
                     
                     <!-- The Spinner -->
                     <div id="loading-indicator" class="loader-container">
                         <div class="spinner"></div>
-                        <p style="margin-top: 1rem; color: #6c757d;">Loading data...</p>
+                        <p style="margin-top: 1rem; color: #6c757d;">${t(lang, 'loading')}</p>
                     </div>
 
                     <!-- The Data Wrapper (Hidden by default) -->
                     <div id="data-wrapper" class="hidden">
                         <div id="pagination-summary" role="status"></div>
-                        <ul class="container_data facets-grid" aria-label="Search results. Links open in a new tab."></ul>
+                        <ul class="container_data facets-grid" aria-label="${t(lang, 'resultsAriaLabel')}"></ul>
                         <div class="pagination-container"></div>
                     </div>
                     

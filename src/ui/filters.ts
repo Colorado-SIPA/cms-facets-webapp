@@ -2,14 +2,15 @@ import { html } from '../utils/html';
 import { sanitizeHTML } from '../utils/sanitize-html';
 import { getUniqueId } from '../utils/get-unique-id';
 import type { FilterOptions, ActiveFilters, FilterItemDef } from '../types';
+import { t, type Language } from '../i18n';
 
-export function renderFilters(available: FilterOptions, active: ActiveFilters, root: ShadowRoot): void {
+export function renderFilters(available: FilterOptions, active: ActiveFilters, root: ShadowRoot, lang: Language): void {
     const container = root.querySelector('.filters');
     if (!container) return;
     const uniqueInstanceId = getUniqueId();
 
     const htmlContent = Object.entries(available).map(([label, groupDef], index) => {
-        return createFilterGroup(label, label, groupDef.items, active, uniqueInstanceId, index + 1);
+        return createFilterGroup(label, label, groupDef.items, active, uniqueInstanceId, index + 1, lang);
     }).join('');
 
     container.innerHTML = htmlContent;
@@ -21,7 +22,8 @@ const createFilterGroup = (
     options: FilterItemDef[],
     active: ActiveFilters,
     instanceId: string,
-    filterId: number
+    filterId: number,
+    lang: Language
 ): string => {
     if (!options || options.length === 0) return '';
 
@@ -46,10 +48,12 @@ const createFilterGroup = (
         `;
     }).join('');
 
+    const ariaLabel = t(lang, 'filterGroupAria', { title: sanitizeHTML(title) });
+
     return html`
         <div class="filter-group-block">
             <h3 class="filter-group-title">${sanitizeHTML(title)}</h3>
-            <ul aria-label="${sanitizeHTML(title)} checkbox filters. Selecting a filter updates the search results.">
+            <ul aria-label="${ariaLabel}">
                 ${listItems}
             </ul>
         </div>

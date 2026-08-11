@@ -26,15 +26,6 @@
                 margin-bottom: 2rem;
                 padding-left: 0;
 
-                &:focus {
-                    outline: 2px dashed #0056b3;
-                    outline-offset: 4px;
-                }
-
-                &:focus:not(:focus-visible) {
-                    outline: none;
-                }
-
                 @media (max-width: 1200px) {
                     grid-template-columns: repeat(2, 1fr);
                 }

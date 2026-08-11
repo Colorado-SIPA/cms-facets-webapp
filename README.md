@@ -35,7 +35,7 @@ This app requires a Google Sheet as a backend data source.
 Simply add the script to any webpage:
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.6/dist/js/sheets-facets.js" integrity="sha384-RjU3ziiojM47KTLek/jNGLeLDJwpRQq/RvWEDeCynRhEtGaLdsnCalS6Gglde+Kv" crossorigin="anonymous"></script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.7/dist/js/sheets-facets.js" integrity="sha384-hfb/d/hSb+kFrQJluGW0nr4JcD8FVlSX09iuOSsWSBdsK2YGePEmR/p3f5XmLWBS" crossorigin="anonymous"></script>
 ```
 
 The script can appear before or after the HTML element (`<sheets-facets>`), but the best practice is to put it in the `<head>` or as close as possible.
@@ -109,10 +109,14 @@ After installing the script, you will need to create the custom HTML element wit
     - `items-per-page`: (Optional) The number of results to display before paginating.
         - ***Values accepted:*** Any number that is less than the total number of entries.
         - ***Default value:*** `20`
+    - `lang`: (Optional) Sets the language using [ISO 639 language codes](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes). Changing this value will translate the UI according to the entries in the [i18n.ts](./src/i18n.ts) file.
+        - ***Values accepted:***: `en` or `es` currently.
+        - ***Default value:*** `en`
+        - ***Note:*** Additional languages can be added via the [i18n.ts](./src/i18n.ts) file.
     - `sort`: Allows the spreadsheet rows to be re-sorted before displaying
         - ***Values accepted:*** 
             - `random`: Randomizes the sort order of the spreadsheet rows
-            - `alphabetical`: requies that each filter applied be matched for anr entry to be returned (e.g. filter_1 AND filter_2)
+            - `alphabetical`: Sorts the rows alphabetically based on the value in the very first cell (Index 0) of your Google Sheet
         - ***Default value:*** None. Spreadsheet rows are sorted in the same order they appear in the host document.
 ---
 #### Search Filters Section:
@@ -181,6 +185,7 @@ After installing the script, you will need to create the custom HTML element wit
         - ***Default value:*** None. If this attribute is omitted, the content will not be displayed.
     - `format`: (Optional) Controls the visual formatting of the data.
         - ***Values accepted:*** 
+            - `list`: Parses comma separated data into a standard bulleted list.
             - `pills`: Parses comma separated data into individual UI chips.
         - ***Default value:*** None. If this attribute is omitted, the content will be displayed as plain text.
     - `label`: (Optional) If provided, this text will be displayed as bold text with a colon prior to the displaying of the content.

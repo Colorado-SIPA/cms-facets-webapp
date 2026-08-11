@@ -8,6 +8,7 @@ import { renderCards } from './ui/cards';
 import { renderFilters } from './ui/filters';
 import { renderPagination } from './ui/pagination';
 import { setupEventListeners } from './event-handlers';
+import { t } from './i18n';
 import { updateSummary } from './ui/summary';
 
 import styles from './styles/index.css?inline';
@@ -60,7 +61,7 @@ export class SheetsFacetsWidget extends HTMLElement {
             this.root.appendChild(styleTag);
 
             const hasFilters = Object.keys(this.state.availableFilters).length > 0;
-            injectLayoutSkeleton(this.root as ShadowRoot, hasFilters);
+            injectLayoutSkeleton(this.root as ShadowRoot, hasFilters, this.state.config.lang);
 
             if (this.hidden) this.hidden = false;
             const mainData = await fetchMainData(this.state.config);
@@ -77,7 +78,7 @@ export class SheetsFacetsWidget extends HTMLElement {
             if (loader) loader.classList.add('hidden');
             if (dataWrapper) dataWrapper.classList.remove('hidden');
 
-            renderFilters(this.state.availableFilters, this.state.activeFilters, this.root as ShadowRoot);
+            renderFilters(this.state.availableFilters, this.state.activeFilters, this.root as ShadowRoot, this.state.config.lang);
             this.updateView();
             setupEventListeners(this, this.root as ShadowRoot);
 
@@ -89,8 +90,8 @@ export class SheetsFacetsWidget extends HTMLElement {
             const errorWrapper = document.createElement('div');
             errorWrapper.innerHTML = html`
                 <div class="alert-danger" role="alert">
-                    <h4>Data Unavailable</h4>
-                    <p>We are unable to load the data at this time. Please try refreshing the page later.</p>
+                    <h4>${t(this.state.config.lang, 'errorTitle')}</h4>
+                    <p>${t(this.state.config.lang, 'errorMessage')}</p>
                 </div>
             `;
 
@@ -116,8 +117,8 @@ export class SheetsFacetsWidget extends HTMLElement {
         const itemsToDisplay = this.state.filteredData.slice(startIndex, endIndex);
 
         renderCards(itemsToDisplay, this.root as ShadowRoot, this.state.config);
-        renderPagination(this.state.currentPage, this.state.totalPages, this.root as ShadowRoot);
-        updateSummary(this.state.filteredData.length, this.state.currentPage, this.state.config.itemsPerPage, this.root as ShadowRoot);
+        renderPagination(this.state.currentPage, this.state.totalPages, this.root as ShadowRoot, this.state.config.lang);
+        updateSummary(this.state.filteredData.length, this.state.currentPage, this.state.config.itemsPerPage, this.root as ShadowRoot, this.state.config.lang);
     }
 
     public toggleFilterInstance(category: keyof ActiveFilters, label: string, value: string) {
@@ -164,7 +165,7 @@ export class SheetsFacetsWidget extends HTMLElement {
         const item = this.state.filteredData.find(i => i.id === itemId);
         if (!item) return;
         this.state.lastFocusedElement = triggerBtn;
-        renderAndOpenModal(item, this.root as ShadowRoot);
+        renderAndOpenModal(item, this.root as ShadowRoot, this.state.config.lang);
     }
 
     public closeModal() {
