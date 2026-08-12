@@ -36,7 +36,7 @@ export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean, lang
     ` : '';
 
     tempWrapper.innerHTML = html`
-        <div class="main-page container ${hasFilters ? 'has-sidebar' : 'no-sidebar'}" id="main-page">
+        <section class="main-page container ${hasFilters ? 'has-sidebar' : 'no-sidebar'}" id="main-page" aria-label="${t(lang, 'appRegionAria')}">
             
             ${sidebarHtml}
             
@@ -69,7 +69,7 @@ export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean, lang
                     
                 </section>
             </div>
-        </div>
+        </section>
     `;
 
     if (tempWrapper.firstElementChild) {

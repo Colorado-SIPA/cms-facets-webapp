@@ -63,6 +63,7 @@
             button.modal-button {
                 align-self: flex-start;
                 background-color: #001970;
+                border: none;
                 border-radius: 0.375rem;
                 color: #fff;
                 margin-top: auto;

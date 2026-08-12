@@ -6,6 +6,7 @@
 export const translations = {
   en: {
     about: 'about',
+    appRegionAria: 'Faceted Search Application',
     clearFilters: 'Clear all filters',
     close: 'Close',
     closeDetails: 'Close Details',
@@ -32,6 +33,7 @@ export const translations = {
   },
   es: {
     about: 'sobre',
+    appRegionAria: 'Aplicación de Búsqueda Facetada',
     clearFilters: 'Borrar todos los filtros',
     close: 'Cerrar',
     closeDetails: 'Cerrar Detalles',
