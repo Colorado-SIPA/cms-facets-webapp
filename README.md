@@ -11,7 +11,7 @@ See the [live demo](https://components.sf-prod-uat.colorado.gov/google-sheets-fa
 - **Google Sheets as a CMS:** Uses a publicly viewable Google Sheet as a data source for the UI cards.
 - **Declarative HTML Configuration:** Define your filter taxonomies and card layouts directly in your HTML markup.
 - **Shadow DOM Encapsulation:** 100% protected CSS. The parent website's styles cannot break the app.
-- **Optimized & Minified:** The entire app is 33KB (9.3 kB gzipped) of highly optimized JavaScript / CSS in one production ready bundle.
+- **Optimized & Minified:** The entire app is 34KB (9.5 kB gzipped) of highly optimized JavaScript / CSS in one production ready bundle.
 
 ## ⚡ Quick Start
 
@@ -35,7 +35,7 @@ This app requires a Google Sheet as a backend data source.
 Simply add the script to any webpage:
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.11/dist/js/sheets-facets.js" integrity="sha384-x2v9MuF8hqni2n4cz+iA0k5fYVXHcrcGws+heLdivI4zW7GZPukbwQArw1VwHvPg" crossorigin="anonymous"></script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.11/dist/js/sheets-facets.js" integrity="sha384-y9aJtwGWKZNsBqcr4Lcp3Wgsm/cgXg9SLAF2J2LVHtbR9LchYxJjl52CPYLwmJFf" crossorigin="anonymous"></script>
 ```
 
 The script can appear before or after the HTML element (`<sheets-facets>`), but the best practice is to put it in the `<head>` or as close as possible.

@@ -37,7 +37,7 @@ export const translations = {
     clearFilters: 'Borrar todos los filtros',
     close: 'Cerrar',
     closeDetails: 'Cerrar Detalles',
-    displayingSummary: 'Mostrando <strong>{start}</strong> al <strong>{end}</strong> de <strong>{total}</strong> resultados en total',
+    displayingSummary: 'Mostrando <strong>{start}</strong> a <strong>{end}</strong> de <strong>{total}</strong> resultados totales',
     displayingZero: 'Mostrando 0 resultados',
     errorMessage: 'No podemos cargar los datos en este momento. Intente actualizar la página más tarde.',
     errorTitle: 'Datos No Disponibles',
