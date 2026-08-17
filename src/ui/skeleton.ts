@@ -6,7 +6,7 @@ export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean, lang
 
     // Conditionally generate the sidebar if filters exist
     const sidebarHtml = hasFilters ? html`
-        <aside class="sidebar">
+        <div class="sidebar">
             <!-- Mobile Hamburger Toggle -->
             <button type="button" class="mobile-filter-toggle w-100" aria-expanded="false" aria-controls="filter-sidebar-content" data-action="toggle_accordion">
                 <span class="accordion-title">${t(lang, 'filterResults')}</span>
@@ -28,11 +28,12 @@ export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean, lang
                             <button class="btn-primary" type="button" data-action="submit_search">${t(lang, 'searchButton')}</button>                          
                         </div>
                     </search>
+                    <div id="mobile-pagination-summary" class="mobile-summary" aria-hidden="true"></div>
                     <div class="filters"></div>
                     <button type="button" class="btn-clear" data-action="clear_filters">${t(lang, 'clearFilters')}</button>  
                 </section>
             </div>
-        </aside>
+        </div>
     ` : '';
 
     tempWrapper.innerHTML = html`
