@@ -8,9 +8,12 @@ export function initializeConfig(element: HTMLElement): AppConfig {
     const rawLang = element.getAttribute('lang') || 'en';
     const lang = isLanguage(rawLang) ? rawLang : 'en';
 
-// Read the sort attribute (validate it matches our expected values)
+    // Read the sort attribute (validate it matches our expected values)
     const rawSort = element.getAttribute('sort');
-    const sort = (rawSort === 'random' || rawSort === 'alphabetical') ? rawSort : undefined;    
+    const sort = (rawSort === 'random' || rawSort === 'alphabetical') ? rawSort : undefined;
+
+    const columnsAttr = element.getAttribute('columns');
+    const columns = columnsAttr ? parseInt(columnsAttr, 10) : 3;
 
     if (!sheetId || !sheetName) {
         throw new Error(`[Climate Facets] Critical Error: Missing 'sheet-id' or 'sheet-name' attributes.`);
@@ -52,7 +55,7 @@ export function initializeConfig(element: HTMLElement): AppConfig {
             };
         }
     });
-    
+
     // 2. Parse Card Layout from the DOM
     const titleEl = element.querySelector('card-title');
     const linkEl = element.querySelector('card-link');
@@ -74,6 +77,7 @@ export function initializeConfig(element: HTMLElement): AppConfig {
         itemsPerPage,
         lang,
         sort,
+        columns,
         availableFilters,
         schema: {
             cardTitleColumn,
@@ -89,7 +93,7 @@ export function initializeConfig(element: HTMLElement): AppConfig {
 // Helper function to parse metadata for cards and modals
 function parseMetaDataElements(rootElement: HTMLElement, selector: string): MetaDataDef[] {
     const metaData: MetaDataDef[] = [];
-    
+
     rootElement.querySelectorAll(selector).forEach(meta => {
         const colStr = meta.getAttribute('column');
         if (colStr) {
@@ -103,6 +107,6 @@ function parseMetaDataElements(rootElement: HTMLElement, selector: string): Meta
             });
         }
     });
-    
+
     return metaData;
 }

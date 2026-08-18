@@ -1,7 +1,7 @@
 import { html } from "../utils/html";
 import { t, type Language } from "../i18n";
 
-export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean, lang: Language): void {
+export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean, lang: Language, columns: number): void {
     const tempWrapper = document.createElement('div');
 
     // Conditionally generate the sidebar if filters exist
@@ -64,7 +64,7 @@ export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean, lang
                     <!-- The Data Wrapper (Hidden by default) -->
                     <div id="data-wrapper" class="hidden">
                         <div id="pagination-summary" role="status"></div>
-                        <ul class="container_data facets-grid" aria-label="${t(lang, 'resultsAriaLabel')}"></ul>
+                        <ul class="container_data facets-grid" data-columns="${columns}" aria-label="${t(lang, 'resultsAriaLabel')}"></ul>
                         <nav class="pagination-container" aria-label="${t(lang, 'paginationAria')}"></nav>
                     </div>
                     

@@ -61,7 +61,7 @@ export class SheetsFacetsWidget extends HTMLElement {
             this.root.appendChild(styleTag);
 
             const hasFilters = Object.keys(this.state.availableFilters).length > 0;
-            injectLayoutSkeleton(this.root as ShadowRoot, hasFilters, this.state.config.lang);
+            injectLayoutSkeleton(this.root as ShadowRoot, hasFilters, this.state.config.lang, this.state.config.columns);
 
             if (this.hidden) this.hidden = false;
             const mainData = await fetchMainData(this.state.config);

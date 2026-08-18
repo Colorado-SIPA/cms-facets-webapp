@@ -22,6 +22,7 @@ export interface SchemaConfig {
 
 export interface AppConfig {
     availableFilters: FilterOptions;
+    columns: number;
     itemsPerPage: number;
     lang: Language;
     schema: SchemaConfig;

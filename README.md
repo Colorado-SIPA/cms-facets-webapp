@@ -35,7 +35,7 @@ This app requires a Google Sheet as a backend data source.
 Simply add the script to any webpage:
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.11/dist/js/sheets-facets.js" integrity="sha384-jf6kPyhi99TJZB7hJ4etxOstcLVx/I04W8JjDJSp0tXNZQP24zktuOBOhuwSNIPo" crossorigin="anonymous"></script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/Colorado-SIPA/cms-facets-webapp@v1.0.11/dist/js/sheets-facets.js" integrity="sha384-4vPiXIJO7m3fxFq+wf117GK1ZAmrKHK0fDquNLGm9fD+13EVYEOsfwW0z0CI0lqc" crossorigin="anonymous"></script>
 ```
 
 The script can appear before or after the HTML element (`<sheets-facets>`), but the best practice is to put it in the `<head>` or as close as possible.
@@ -103,7 +103,11 @@ After installing the script, you will need to create the custom HTML element wit
 - **Description:** The wrapper for the entire app.
 - **Attributes:**
     - `sheet-id`: (Required) The unique ID found in your Google Sheet's URL.
-    - `sheet-name`: (Required) The exact name of the tab in the spreadsheet containing your data
+    - `sheet-name`: (Required) The exact name of the tab in the spreadsheet containing your data.
+    - `columns`: (Optional) Sets the number of columns for search results. 
+        - ***Values accepted:*** A number between 1&ndash;4.
+        - ***Default value:*** `3`
+        - ***Note:*** Implementations that use more succinct anchor text can use a higher number of columms, while longer strings of verbose text will benefit from fewer columns.
     - `hidden`: (Optional) Prevents the flash of unstyled content, which is common with custom elements.
         - ***Note:*** This is a boolean attribute that does not accept a value
     - `items-per-page`: (Optional) The number of results to display before paginating.
