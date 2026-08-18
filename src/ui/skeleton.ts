@@ -25,12 +25,13 @@ export function injectLayoutSkeleton(root: ShadowRoot, hasFilters: boolean, lang
                         <label for="search_text" class="visually-hidden">${t(lang, 'filterResults')}</label>
                         <div class="input-group">
                             <input type="search" class="form-control" name="search_text" id="search_text" placeholder="${t(lang, 'searchPlaceholder')}" autocomplete="off"/>
-                            <button class="btn-primary" type="button" data-action="submit_search">${t(lang, 'searchButton')}</button>                          
+                            <button class="btn-primary" type="button" data-action="submit_search">${t(lang, 'searchButton')}</button>  
                         </div>
+                        <button type="button" class="btn-clear" data-action="clear_filters">${t(lang, 'clearFilters')}</button>
                     </search>
                     <div id="mobile-pagination-summary" class="mobile-summary" aria-hidden="true"></div>
                     <div class="filters"></div>
-                    <button type="button" class="btn-clear" data-action="clear_filters">${t(lang, 'clearFilters')}</button>  
+                    
                 </section>
             </div>
         </div>
