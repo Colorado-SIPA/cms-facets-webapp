@@ -126,11 +126,11 @@ After installing the script, you will need to create the custom HTML element wit
 #### Search Filters Section:
 
 ##### `<search-filters>`
-- **Description:** The wrapper for the accordions that contain checkbox filters.
+- **Description:** The wrapper for the checkbox filters that appear in the left sidebar.
 - **Attributes:** None
 
 ##### `<filter-group>`
-- **Description:** Establishes an accordion with grouped checkbox inputs that function as filters on the content.
+- **Description:** Establishes a collection of grouped checkbox inputs that function as filters on the content.
 - **Attributes:**
     - `cols`: (Optional) Specifies the column numbers from the Google spreadsheet to search. 
         - ***Values accepted:*** Any number that represents a valid column in the Google Sheet. Multiple comma separated values are allowed. Note that columns are zero indexed.
@@ -142,15 +142,15 @@ After installing the script, you will need to create the custom HTML element wit
         - ***Default value:*** `any`
 
 ##### `<filter-title>`
-- **Description:** Creates the title for the accordion group.
+- **Description:** Creates the title for the checkbox filter group.
 - **Attributes:** None
 
 ##### `<filter-item>`
 - **Description:** A keyword or keyphrase that will be searched for. It will also be used to create the checkbox label on the filter.
 - **Attributes:** 
-    - `value`: (Optional) Defines the text string to search for when filtering search results. This is especially useful when the text in your column is different from the text used as the filter label. Examples might include entire columns of Yes/No or True/False values.
+    - `value`: (Optional) Defines the text string to search for when filtering search results. This is especially useful when the text in your column is different from the text used as the filter label.
         - ***Values accepted:*** Any string of characters
-        - ***Default value:*** If omitted, the exact text inside the element will be searched (case insensitive).
+        - ***Default value:*** None. If omitted, the exact text inside the element will be searched (case insensitive).
 
 ---
 #### Search Results Section and UI Cards:
