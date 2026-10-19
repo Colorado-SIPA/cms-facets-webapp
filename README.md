@@ -95,11 +95,9 @@ After installing the script, you will need to create the custom HTML element wit
 
 ---
 
-### Element API Reference
+## Main Structure - HTML Reference
 
-#### Main Structure:
-
-##### `<sheets-facets>`
+### `<sheets-facets>`
 - **Description:** The wrapper for the entire app.
 - **Attributes:**
     - `sheet-id`: (Required) The unique ID found in your Google Sheet's URL.
@@ -123,13 +121,13 @@ After installing the script, you will need to create the custom HTML element wit
             - `alphabetical`: Sorts the rows alphabetically based on the value in the very first cell (Index 0) of your Google Sheet
         - ***Default value:*** None. Spreadsheet rows are sorted in the same order they appear in the host document.
 ---
-#### Search Filters Section:
+## Search Filters - HTML Reference
 
-##### `<search-filters>`
+### `<search-filters>`
 - **Description:** The wrapper for the checkbox filters that appear in the left sidebar.
 - **Attributes:** None
 
-##### `<filter-group>`
+### `<filter-group>`
 - **Description:** Establishes a collection of grouped checkbox inputs that function as filters on the content.
 - **Attributes:**
     - `cols`: (Optional) Specifies the column numbers from the Google spreadsheet to search. 
@@ -141,11 +139,11 @@ After installing the script, you will need to create the custom HTML element wit
             - `all`: requires that each filter applied be matched for an entry to be returned (e.g. filter_1 AND filter_2)
         - ***Default value:*** `any`
 
-##### `<filter-title>`
+### `<filter-title>`
 - **Description:** Creates the title for the checkbox filter group.
 - **Attributes:** None
 
-##### `<filter-item>`
+### `<filter-item>`
 - **Description:** A keyword or keyphrase that will be searched for. It will also be used to create the checkbox label on the filter.
 - **Attributes:** 
     - `value`: (Optional) Defines the text string to search for when filtering search results. This is especially useful when the text in your column is different from the text used as the filter label.
@@ -153,35 +151,35 @@ After installing the script, you will need to create the custom HTML element wit
         - ***Default value:*** None. If omitted, the exact text inside the element will be searched (case insensitive).
 
 ---
-#### Search Results Section and UI Cards:
+## Search Results and UI Cards  - HTML Reference
 
-##### `<search-results>` (required)
+### `<search-results>` (required)
 - **Description:** The wrapper for the card and modal layouts.
 - **Attributes:** None
 
-##### `<card-layout>` (required)
+### `<card-layout>` (required)
 - **Description:** Defines the layout of each UI card and the mappings to the Google Sheet columns where the data will come from.
 - **Attributes:** None
 
-##### `<card-link>` (optional)
+### `<card-link>` (optional)
 - **Description:** Defines a column in the Google Sheet that contains a fully formed URL to be used for the linked title.
 - **Attributes:**
     - `column`: (Required) The zero-indexed column number from the Google spreadsheet where the data will be pulled from.
         - ***Values accepted:*** Any number that represents a valid column in the Google Sheet.
         - ***Default value:*** None. If this element is omitted, the card title will not be linked.
 
-##### `<card-title>` (required)
+### `<card-title>` (required)
 - **Description:** Defines a column in the Google Sheet that contains the text to use for the linked title.
 - **Attributes:**
     - `column`: (Required) The zero-indexed column number from the Google spreadsheet where the data will be pulled from.
         - ***Values accepted:*** Any number that represents a valid column in the Google Sheet.
         - ***Default value:*** None. If this element is omitted, the card title will display "Not Available."
 
-##### `<card-body>` (required)
+### `<card-body>` (required)
 - **Description:** The wrapper for the content section on the search results UI cards.
 - **Attributes:** None
 
-##### `<card-content>` (required)
+### `<card-content>` (required)
 - **Description:** Defines a content section to be fetched from a specific column in the Google Sheet. Multiple instances may be used to display values from different columns.
 - **Attributes:**
     - `column`: (Required) The zero-indexed column number from the spreadsheet.
@@ -219,7 +217,7 @@ After installing the script, you will need to create the custom HTML element wit
             - `[[COLUMN_VALUE]]`: Displays the contents of the spreadsheet cell referenced by the `card-content` element via the `column` attribute.
             - NOTE: Shortcodes can be used in conjunction with static text to create more useful anchor text (e.g. `Send an email to [[TITLE]]`)
 
-##### `<card-action>` (optional)
+### `<card-action>` (optional)
 - **Description:** Creates a button at the bottom of the card used to interact with the entry.
 - **Attributes:**
     - `trigger`: (Required) Determines the action of the button.
@@ -228,32 +226,32 @@ After installing the script, you will need to create the custom HTML element wit
         - ***Default value:*** None. If this attribute is omitted, the button will not render.
 
 ---
-#### Modal Window Configuration:
+## Modal Window - HTML Reference
 
 NOTE: The modal window is only available if the `<card-action>` element is placed within `<card-layout>`.
 
 The use of a modal is completely optional but highly encouraged when the number of data fields exceeds what can reasonably be displayed on the cards.
 
-##### `<modal-layout>` (optional)
+### `<modal-layout>` (optional)
 - **Description:** The wrapper for defining the structure and content of the pop-up details dialog.
 - **Attributes:** None
 
-##### `<modal-header>` (optional)
+### `<modal-header>` (optional)
 - **Description:** Structural wrapper for the modal title, which will be announced to screen readers upon opening.
 - **Attributes:** None
 
-##### `<modal-title>` (optional)
+### `<modal-title>` (optional)
 - **Description:** Defines the column in the Google Sheet that contains the text to use for the primary modal heading (`<h2>`). If omitted, it will fall back to the `<card-title>` mapping.
 - **Attributes:**
     - `column`: (Required) The zero-indexed column number from the spreadsheet.
         - ***Values accepted:*** Any number that represents a valid column in the Google Sheet.
         - ***Default value:*** None. If this attribute or the element is omitted, then the `<card-title>` element will be used to provide a title on the modal window
 
-##### `<modal-body>` (required)
+### `<modal-body>` (required)
 - **Description:** Structural wrappers for the body content of the modal.
 - **Attributes:** None
 
-##### `<modal-content>` (required)
+### `<modal-content>` (required)
 - **Description:** Defines a content section to be fetched from a specific column in the Google Sheet. Multiple instances may be used to display values from different columns.
 - **Attributes:**
     - `column`: (Required) The zero-indexed column number from the spreadsheet.
@@ -292,9 +290,9 @@ The use of a modal is completely optional but highly encouraged when the number 
 
 ---
 
-### Project Architecture
+## Project Architecture
 
-#### Fetching Google Sheets Data
+### Fetching Google Sheets Data
 
 This app does not use the official Google Sheets API, allowing us to bypass using the heavy REST API, which would require an API key to be either served over a secure backend server or transmitted via JavaScript for all to see (and steal or abuse).
 
@@ -309,13 +307,15 @@ The benefits of this approach include:
 
 The tradeoff is that this endpoint is intended to specifically to power Google Charts. It is not an officially documented public REST API. While millions of web apps rely on it and Google is highly unlikely to turn it off without warning, **_there is no official SLA for enterprise apps_**.
 
-#### Module Organization
+### Module Organization
 
 - **`src/index.ts`:** The main Web Component class definition and Shadow DOM initialization.
 - **`src/config.ts`:** Parses the declarative HTML tags into the internal state configuration.
 - **`src/api/`:** Handles the zero-dependency fetching and CSV parsing from the Google `gviz/tq` endpoint.
 - **`src/ui/`:** Contains the HTML template literals that render the UI (cards, filters, pagination).
 - **`src/styles/`:** The modular CSS files. These are imported inline and injected directly into the Shadow DOM.
+
+---
 
 ## 🛠️ Local Development
 
