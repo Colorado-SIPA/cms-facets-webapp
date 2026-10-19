@@ -15,11 +15,11 @@
   },
   "devDependencies": {
     "@lit-labs/rollup-plugin-minify-html-literals": "^0.2.0",
-    "@types/node": "^26.2.0",
-    "autoprefixer": "^10.5.4",
-    "postcss-nested": "^8.0.1",
-    "tsx": "^4.23.12",
+    "@types/node": "^26.6.5",
+    "autoprefixer": "^10.6.1",
+    "postcss-nested": "^9.0.0",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2",
-    "vite": "^8.2.1"
+    "vite": "^8.3.4"
   }
 }

@@ -160,7 +160,7 @@ After installing the script, you will need to create the custom HTML element wit
 - **Attributes:** None
 
 ##### `<card-layout>` (required)
-- **Description:** Defines the layout of each `div.card-body` element and the mappings to the Google Sheet columns where the data will come from.
+- **Description:** Defines the layout of each UI card and the mappings to the Google Sheet columns where the data will come from.
 - **Attributes:** None
 
 ##### `<card-link>` (optional)
