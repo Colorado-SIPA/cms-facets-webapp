@@ -133,6 +133,7 @@ After installing the script, you will need to create the custom HTML element wit
     - `cols`: (Optional) Specifies the column numbers from the Google spreadsheet to search. 
         - ***Values accepted:*** Any number that represents a valid column in the Google Sheet. Multiple comma separated values are allowed. Note that columns are zero indexed.
         - ***Default value:*** None - all columns are searched
+        - ***NOTE:*** When the `cols` attribute is omitted, the filter engine looks for a `<card-content>` or `<modal-content>` element with a `label` attribute that matches the `<filter-item>` innerText.
     - `match`: (Optional) Determines how search results are filtered when multiple checkboxes are selected.
         - ***Values accepted:*** 
             - `any`: returns entries that have at least one filter matching (e.g. filter_1 OR filter_2)
