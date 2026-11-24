@@ -130,19 +130,71 @@ After installing the script, you will need to create the custom HTML element wit
 #### `<filter-group>`
 - **Description:** Establishes a collection of grouped checkbox inputs that function as filters on the content.
 - **Attributes:**
-    - `cols`: (Optional) Specifies the column numbers from the Google spreadsheet to search. 
+    - `cols`: (Optional) Specifies the column numbers from the Google spreadsheet to search. This is the most straightforward way to configure columns that will be searched.
         - ***Values accepted:*** Any number that represents a valid column in the Google Sheet. Multiple comma separated values are allowed. Note that columns are zero indexed.
         - ***Default value:*** None - all columns are searched
-        - ***NOTE:*** When the `cols` attribute is omitted, the filter engine looks for a `<card-content>` or `<modal-content>` element with a `label` attribute that matches the `<filter-item>` innerText.
     - `match`: (Optional) Determines how search results are filtered when multiple checkboxes are selected.
         - ***Values accepted:*** 
             - `any`: returns entries that have at least one filter matching (e.g. filter_1 OR filter_2)
             - `all`: requires that each filter applied be matched for an entry to be returned (e.g. filter_1 AND filter_2)
         - ***Default value:*** `any`
+- **Implicit Filter Association:**<br> 
+    When the `cols` attribute is omitted, the app implicitly tries to associate filters based on matching names.
+    + **Single filter on a column:**<br>
+    Each `<filter-item>` looks for a `<card-content>` or `<modal-content>` element whose `label` matches its own text.
+    ```html
+    <search-filters>
+        <filter-group>
+            <filter-title>...</filter-title>
+            <!-- filter-item text matches the value of a label -->
+            <filter-item>Service In Spanish</filter-item>
+        </filter-group>
+    </search-filters>
+
+    <!-- define the UI card layout -->
+    <search-results>
+        <card-layout>
+            <card-title column="0"></card-title>
+            <card-body>
+                <!-- the above filter item will match against this column -->
+                <card-content column="4" label="Service in Spanish"></card-content>
+            </card-body>
+        </card-layout>
+    </search-results>
+    ```
+    + **Multiple filters on a column:**<br>
+    If the `<filter-title>` text matches a `label` attribute value, every `<filter-item>` in the `<filter-group>` searches the column associated with that `<card-content>` or `<modal-content>` where the match occurred.
+    ```html
+    <search-filters>
+        <filter-group>
+            <!-- filter-title text matches the value of a label -->
+            <filter-title>Services Offered</filter-title>
+            <filter-item>...</filter-item>
+            <filter-item>...</filter-item>
+        </filter-group>
+    </search-filters>
+
+    <search-results>
+        <card-layout>
+            <card-title column="0"></card-title>
+            <card-body>
+                <!-- all filter items above will match against this column -->
+                <card-content column="8" label="Services Offered"></card-content>
+            </card-body>
+        </card-layout>
+    </search-results>
+    ```
+    + **Order of Operations:**
+        1. `<filter-title>` text is searched against `<card-content>` labels
+        2. `<filter-title>` text is searched against `<modal-content>` labels
+        3. `<filter-content>` text is searched against `<card-content>` labels
+        4. `<filter-content>` text is searched against `<modal-content>` labels
+        
 
 #### `<filter-title>`
-- **Description:** Creates the title for the checkbox filter group.
+- **Description:** Creates the visible title for the checkbox filter group.
 - **Attributes:** None
+- **Usage:** Text in this element can be used to create dynamic filter associations with `<card-content>` and `<modal-content>` elements. See the described behavior above.
 
 #### `<filter-item>`
 - **Description:** A keyword or keyphrase that will be searched for. It will also be used to create the checkbox label on the filter.
@@ -266,6 +318,7 @@ The use of a modal is completely optional but highly encouraged when the number 
     - `label`: (Optional) If provided, this text will be displayed as bold text with a colon prior to the displaying of the content.
         - ***Values accepted:*** Any string
         - ***Default value:*** None. If this attribute is omitted, the content will be displayed without a label.
+    - ***NOTE:*** When the `cols` attribute is omitted from a `<filter-group>` element, the filter engine looks for a `<modal-content>` with a `label` attribute that matches the `<filter-item>` innerText. If found, the filters will be associated with the `<modal-content>`.
 
 - **Hyperlink Attributes**:
     - `link-type`: (Optional) Transforms the content into an actionable HTML link.
